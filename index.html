@@ -102,11 +102,10 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .found-body li{margin:1px 0}
 @media(min-width:768px){.found-body li{margin:2px 0}}
 /* Layers */
-.layer-row{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;align-items:start}
-@media(min-width:640px){.layer-row{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:1024px){.layer-row{grid-template-columns:repeat(7,1fr);gap:6px}}
-.layer-card{border:1.5px solid var(--line);border-radius:6px;overflow:hidden;min-height:auto;cursor:pointer;transition:transform .15s;background:#1e293b}
-@media(min-width:1024px){.layer-card{min-height:210px}}
+.layer-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;align-items:stretch}
+.layer-card{flex:1 1 100%;min-width:0;border:1.5px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;transition:transform .15s;background:#1e293b}
+@media(min-width:640px){.layer-card{flex:0 1 calc(50% - 5px)}}
+@media(min-width:1180px){.layer-card{flex:0 1 calc(25% - 8px);min-height:235px}}
 .layer-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .layer-head{border-radius:5px 5px 0 0;padding:4px 6px;color:#fff;font-weight:700;font-size:8px;text-align:center;display:flex;align-items:center;justify-content:center;gap:2px;min-height:28px;line-height:1.1}
 @media(min-width:1024px){.layer-head{padding:5px 8px;font-size:9.5px;min-height:32px}}
@@ -120,16 +119,16 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .layer-section{display:flex;flex-direction:column;min-width:0}
 .layer-section .priority-badge{display:block;margin-bottom:2px}
 @media(min-width:1024px){.layer-section .priority-badge{margin-bottom:5px}}
-.layer-body ul{margin:0;padding-left:10px;font-size:7px;overflow-wrap:break-word;word-break:break-word}
+.layer-body ul{margin:0;padding-left:10px;font-size:7px;overflow-wrap:normal;word-break:normal;hyphens:none}
 @media(min-width:1024px){.layer-body ul{padding-left:11px;font-size:9px}}
 .layer-body li{margin:0.5px 0}
 @media(min-width:1024px){.layer-body li{margin:2px 0}}
 .must{color:var(--priority-must);font-weight:700}.should{color:var(--priority-should);font-weight:700}.nice{color:var(--priority-nice);font-weight:700}
 /* Engineering */
-.eng-row{display:grid;grid-template-columns:1fr;gap:6px;align-items:start}
-@media(min-width:640px){.eng-row{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1024px){.eng-row{grid-template-columns:repeat(5,1fr);gap:8px}}
-.eng-card{border:1.5px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;transition:transform .15s;background:#1e293b}
+.eng-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;align-items:stretch}
+.eng-card{flex:1 1 100%;min-width:0;border:1.5px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;transition:transform .15s;background:#1e293b}
+@media(min-width:640px){.eng-card{flex:0 1 calc(50% - 5px)}}
+@media(min-width:1024px){.eng-card{flex:0 1 calc(33.333% - 7px)}}
 .eng-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .eng-head{border-radius:5px 5px 0 0;padding:4px 6px;color:#fff;font-weight:700;font-size:8px;text-align:center;min-height:28px;display:flex;align-items:center;justify-content:center;line-height:1.1}
 @media(min-width:1024px){.eng-head{padding:5px 8px;font-size:10px;min-height:32px}}
@@ -140,8 +139,8 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .eng-body li{margin:0.5px 0}
 @media(min-width:1024px){.eng-body li{margin:1.5px 0}}
 /* Path */
-.path-row{display:flex;align-items:stretch;gap:4px;overflow-x:auto;padding-bottom:8px}
-.path-card{border:1.5px solid var(--line);border-radius:6px;padding:5px 6px;font-size:8px;position:relative;flex-shrink:0;min-width:85px;max-width:85px;background:#1e293b}
+.path-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));align-items:stretch;gap:7px;padding-bottom:8px}
+.path-card{border:1.5px solid var(--line);border-radius:6px;padding:7px 8px;font-size:8px;position:relative;min-width:0;max-width:none;background:#1e293b}
 .path-card b{font-size:7.5px;color:#f1f5f9;line-height:1.1}
 .path-card ul{margin:2px 0 0;padding-left:10px;display:none}
 .path-card li{margin:0.5px 0}
@@ -1098,7 +1097,7 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
        </div>
        <div class="eng-card" onclick="scrollToSection('architecture')" style="cursor:pointer">
         <div class="eng-head" style="background:var(--priority-nice-dark)">
-         1.1. ARCHITECTURE
+         11. ARCHITECTURE
         </div>
         <div class="eng-body">
          <ul>
