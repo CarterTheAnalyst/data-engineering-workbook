@@ -150,14 +150,20 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .progress-fill{transition:width .4s ease}
 #sections-container{display:block}
 .checklist-category-selectors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:18px}
-.checklist-category-toggle{position:relative;width:100%;min-height:168px;padding:22px;border:1px solid #334155;border-radius:14px;background:#071b31;color:#f8fafc;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:18px;cursor:pointer;text-align:left;box-shadow:0 10px 24px rgba(2,6,23,.28);transition:transform .2s,border-color .2s,box-shadow .2s}
+.checklist-category-toggle{position:relative;width:100%;min-height:210px;padding:24px;border:1px solid #334155;border-radius:16px;background:linear-gradient(145deg,#06182b,#08243d);color:#f8fafc;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:20px;cursor:pointer;text-align:left;overflow:hidden;box-shadow:0 12px 28px rgba(2,6,23,.34);transition:transform .2s,border-color .2s,box-shadow .2s}
 .checklist-category-toggle:before{content:"";position:absolute;left:22px;right:22px;top:0;height:3px;border-radius:0 0 3px 3px;background:var(--category-color)}
+.checklist-category-toggle:after{content:"";position:absolute;width:150px;height:150px;right:-62px;top:-72px;border:1px solid color-mix(in srgb,var(--category-color) 38%,transparent);border-radius:50%;box-shadow:0 0 0 22px color-mix(in srgb,var(--category-color) 7%,transparent),0 0 0 45px color-mix(in srgb,var(--category-color) 4%,transparent);pointer-events:none}
 .checklist-category-toggle:hover{transform:translateY(-3px);border-color:var(--category-color);box-shadow:0 15px 32px rgba(2,6,23,.38)}
 .checklist-category-toggle.is-active{border-color:var(--category-color);box-shadow:0 0 0 1px var(--category-color),0 16px 36px color-mix(in srgb,var(--category-color) 20%,rgba(2,6,23,.4))}
-.checklist-category-title{display:flex;align-items:flex-start;gap:12px;font-size:15px;font-weight:800;line-height:1.2}
-.checklist-category-dot{width:34px;height:34px;border:1px solid var(--category-color);border-radius:10px;background:color-mix(in srgb,var(--category-color) 12%,#071b31);box-shadow:0 0 18px color-mix(in srgb,var(--category-color) 24%,transparent);flex-shrink:0}
+.checklist-category-title{position:relative;z-index:1;display:flex;align-items:center;gap:15px;font-size:15px;font-weight:800;line-height:1.2}
+.checklist-category-icon{width:52px;height:52px;border:1px solid var(--category-color);border-radius:14px;background:color-mix(in srgb,var(--category-color) 11%,#071b31);color:var(--category-color);display:grid;place-items:center;box-shadow:0 0 22px color-mix(in srgb,var(--category-color) 22%,transparent);flex-shrink:0}
+.checklist-category-icon svg{width:27px;height:27px;stroke-width:1.7}
 .checklist-category-subtitle{display:block;margin-top:9px;color:#9fb0c4;font-size:10px;font-weight:500;line-height:1.45}
-.checklist-category-meta{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#cbd5e1;font-size:10px;font-weight:700;white-space:nowrap}
+.checklist-category-footer{position:relative;z-index:1;width:100%;padding-top:14px;border-top:1px solid rgba(148,163,184,.16);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.checklist-category-action{display:flex;align-items:center;gap:7px;color:var(--category-color);font-size:10px;font-weight:800;letter-spacing:.15px}
+.checklist-category-action-arrow{font-size:15px;transition:transform .2s}
+.checklist-category-toggle:hover .checklist-category-action-arrow{transform:translateX(4px)}
+.checklist-category-meta{display:flex;align-items:center;gap:9px;color:#cbd5e1;font-size:9px;font-weight:700;white-space:nowrap}
 .checklist-category-chevron{font-size:18px;transition:transform .2s}
 .checklist-category-panels{border:1px solid #334155;border-radius:12px;background:#0b1220;overflow:hidden}
 .checklist-category-panel{padding:14px;background:#0f172a}
@@ -169,7 +175,7 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .checklist-section-card .section-toggle>span{line-height:1.25}
 .checklist-section-card .section-toggle>div{width:100%;justify-content:flex-end}
 @media(max-width:1050px){.checklist-category-selectors{grid-template-columns:1fr}.checklist-category-toggle{min-height:120px}.checklist-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:680px){.checklist-category-grid{grid-template-columns:1fr}.checklist-section-card .section-toggle{min-height:auto}.checklist-category-toggle{padding:18px}.checklist-category-meta{font-size:9px}}
+@media(max-width:680px){.checklist-category-grid{grid-template-columns:1fr}.checklist-section-card .section-toggle{min-height:auto}.checklist-category-toggle{padding:18px}.checklist-category-footer{align-items:flex-start;flex-direction:column}.checklist-category-meta{font-size:9px}}
 .section-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
 .section-content.open{max-height:8000px}
 .chevron-icon{transition:transform .3s ease}
@@ -1534,9 +1540,9 @@ ${lang==='sql'?`<div class="sql-tables-panel" id="tablespanel-${safeId}">
 }
 
 const CHECKLIST_CATEGORIES=[
-{id:'technical',label:'CORE TECHNICAL SKILLS',subtitle:'SQL, Python, modeling, pipeline construction, quality, orchestration, DevOps and cloud',color:'#22c55e',open:false},
-{id:'professional',label:'BUSINESS, GOVERNANCE & STRATEGY',subtitle:'Requirements, production operations, governance, architecture and trusted data consumption',color:'#2563eb',open:false},
-{id:'bonus',label:'BONUS — NICE TO KNOW',subtitle:'Engineering mindset, trade-offs and leadership habits',color:'#9ca3af',open:false}
+{id:'technical',label:'CORE TECHNICAL SKILLS',subtitle:'SQL, Python, modeling, pipeline construction, quality, orchestration, DevOps and cloud',color:'#22c55e',icon:'workflow',open:false},
+{id:'professional',label:'BUSINESS, GOVERNANCE & STRATEGY',subtitle:'Requirements, production operations, governance, architecture and trusted data consumption',color:'#2563eb',icon:'building-2',open:false},
+{id:'bonus',label:'BONUS — NICE TO KNOW',subtitle:'Engineering mindset, trade-offs and leadership habits',color:'#9ca3af',icon:'sparkles',open:false}
 ];
 function checklistCategoryFor(section){
 if(section.id==='engineering_mindset')return 'bonus';
@@ -1566,8 +1572,8 @@ CHECKLIST_CATEGORIES.forEach(category=>{
 const sections=SECTIONS.filter(section=>checklistCategoryFor(section)===category.id);
 const topicCount=sections.reduce((sum,section)=>sum+section.topics.length,0);
 selectors.insertAdjacentHTML('beforeend',`<button type="button" class="checklist-category-toggle${category.open?' is-active':''}" id="category-btn-${category.id}" style="--category-color:${category.color}" aria-expanded="${category.open}" onclick="toggleChecklistCategory('${category.id}')">
-<span class="checklist-category-title"><span class="checklist-category-dot"></span><span>${category.label}<span class="checklist-category-subtitle">${category.subtitle}</span></span></span>
-<span class="checklist-category-meta">${sections.length} sections · ${topicCount} items <span class="checklist-category-chevron" id="category-chev-${category.id}" style="display:inline-block;transform:${category.open?'rotate(180deg)':''}">v</span></span>
+<span class="checklist-category-title"><span class="checklist-category-icon"><i data-lucide="${category.icon}"></i></span><span>${category.label}<span class="checklist-category-subtitle">${category.subtitle}</span></span></span>
+<span class="checklist-category-footer"><span class="checklist-category-action">Explore category <span class="checklist-category-action-arrow">→</span></span><span class="checklist-category-meta">${sections.length} sections · ${topicCount} items <span class="checklist-category-chevron" id="category-chev-${category.id}" style="display:inline-block;transform:${category.open?'rotate(180deg)':''}">v</span></span></span>
 </button>`);
 panels.insertAdjacentHTML('beforeend',`<div class="checklist-category-panel" id="category-panel-${category.id}" style="display:${category.open?'block':'none'}"><div class="checklist-category-grid" id="category-grid-${category.id}"></div></div>`);
 });
