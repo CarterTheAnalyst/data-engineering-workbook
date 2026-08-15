@@ -30,7 +30,11 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .ai-launch-bar{display:grid;grid-template-columns:88px 1fr;gap:7px;padding:9px 10px;border-bottom:1px solid #1b3145;background:#081522}.ai-provider-select,.ai-launch-btn{height:34px;border-radius:8px;font:800 9px 'DM Sans',sans-serif}.ai-provider-select{border:1px solid #38536a;background:#0b1927;color:#dbeafe;padding:0 7px}.ai-launch-btn{border:1px solid #d97757;background:linear-gradient(135deg,#9b4f35,#c06746);color:#fff;cursor:pointer;box-shadow:0 5px 16px rgba(155,79,53,.2)}.ai-launch-btn:hover{filter:brightness(1.1)}
 .ai-tutor-messages{flex:1;overflow-y:auto;padding:13px 11px;display:flex;flex-direction:column;gap:10px}.ai-message{max-width:92%;border:1px solid #20384e;border-radius:10px;padding:9px 10px;font-size:9.5px;line-height:1.48;white-space:pre-wrap}.ai-message.tutor{align-self:flex-start;background:#0c1c2b;color:#d8e7f2;border-top-left-radius:3px}.ai-message.user{align-self:flex-end;background:#12344b;color:#e0f2fe;border-color:#246080;border-top-right-radius:3px}.ai-message .ai-label{display:block;margin-bottom:5px;color:#67e8f9;font-size:7.5px;font-weight:800;text-transform:uppercase;letter-spacing:.45px}.ai-message code{font-family:'SF Mono',Consolas,monospace;color:#bae6fd;background:#06101a;padding:1px 3px;border-radius:3px}
 .ai-tutor-compose{padding:10px;border-top:1px solid #21384d;background:#08131f}.ai-tutor-input-wrap{display:grid;grid-template-columns:1fr 34px;gap:7px;align-items:end;border:1px solid #2a4b64;border-radius:10px;background:#0b1927;padding:7px}.ai-tutor-input{width:100%;min-height:39px;max-height:110px;resize:none;border:0;outline:0;background:transparent;color:#e2e8f0;font:9.5px/1.4 'DM Sans',sans-serif}.ai-tutor-input::placeholder{color:#607589}.ai-tutor-send{width:32px;height:32px;border:1px solid #38bdf8;border-radius:8px;background:#0c4a6e;color:#e0f2fe;font-size:16px;cursor:pointer}.ai-tutor-note{display:flex;justify-content:space-between;gap:8px;margin-top:6px;color:#51677a;font-size:7px}.ai-tutor-toggle{display:none;position:fixed;right:12px;bottom:14px;z-index:9002;border:1px solid #38bdf8;border-radius:999px;background:#082238;color:#e0f2fe;padding:9px 12px;font-size:10px;font-weight:800;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.roadmap-nav{position:fixed;z-index:8990;inset:0 auto 0 0;width:238px;display:flex;flex-direction:column;background:#070d17;border-right:1px solid #29445f;box-shadow:14px 0 42px rgba(0,0,0,.24);color:#dbeafe;transform:translateX(-100%);transition:transform .22s ease}.roadmap-nav.is-open{transform:translateX(0)}
+.roadmap-nav-head{padding:15px 14px 12px;border-bottom:1px solid #20374b;background:linear-gradient(145deg,#0b1d2d,#07111d)}.roadmap-nav-kicker{font-size:7.5px;color:#38bdf8;text-transform:uppercase;letter-spacing:.7px;font-weight:900}.roadmap-nav-head h1{margin:5px 0 3px;font-size:14px;line-height:1.15}.roadmap-nav-head p{margin:0;color:#70879b;font-size:8px;line-height:1.35}.roadmap-profile{margin:10px 10px 0;padding:9px;border:1px solid #25435b;border-radius:8px;background:#0a1724}.roadmap-profile b{display:block;font-size:9px}.roadmap-profile span{display:block;margin-top:2px;color:#6f879b;font-size:7.5px}.roadmap-nav-progress{margin:10px;padding:0 2px}.roadmap-nav-progress div:first-child{display:flex;justify-content:space-between;font-size:8px;color:#91a8ba}.roadmap-nav-track{height:5px;margin-top:6px;border-radius:999px;background:#203246;overflow:hidden}.roadmap-nav-fill{height:100%;width:0;background:linear-gradient(90deg,#22c55e,#38bdf8);border-radius:inherit}.roadmap-nav-list{flex:1;overflow-y:auto;padding:5px 8px 15px}.roadmap-nav-btn{width:100%;display:grid;grid-template-columns:22px 1fr;gap:7px;align-items:center;margin:3px 0;padding:7px;border:1px solid transparent;border-radius:7px;background:transparent;color:#9db2c4;text-align:left;font:700 8.5px/1.25 'DM Sans',sans-serif;cursor:pointer}.roadmap-nav-btn:hover,.roadmap-nav-btn.is-active{border-color:#28506d;background:#0b2133;color:#e0f2fe}.roadmap-nav-icon{width:22px;height:22px;display:grid;place-items:center;border-radius:6px;background:#102438;color:#67e8f9;font-size:8px}.roadmap-nav-count{display:block;margin-top:2px;color:#5e778c;font-size:7px;font-weight:500}.roadmap-nav-toggle{display:none;position:fixed;left:12px;bottom:14px;z-index:9002;border:1px solid #2dd4bf;border-radius:999px;background:#082621;color:#ccfbf1;padding:9px 12px;font-size:10px;font-weight:800;box-shadow:0 8px 30px rgba(0,0,0,.4)}
 @media(min-width:1281px){body.ai-tutor-enabled{padding-right:390px}.poster{max-width:1600px}.ai-tutor-shell.is-hidden{transform:translateX(100%)}body.ai-tutor-enabled:has(.ai-tutor-shell.is-hidden){padding-right:0}.ai-tutor-close{display:none}}
+@media(min-width:1560px){body.learning-nav-enabled{padding-left:238px}.roadmap-nav{transform:translateX(0)}.poster{max-width:1480px}}
+@media(max-width:1559px){.roadmap-nav-toggle{display:block}}
 @media(max-width:1280px){.ai-tutor-shell{transform:translateX(100%);transition:transform .22s ease;width:min(390px,94vw)}.ai-tutor-shell.is-open{transform:translateX(0)}.ai-tutor-toggle{display:block}.ai-tutor-close{display:block;border:0;background:transparent;color:#94a3b8;font-size:20px;cursor:pointer}}
 .topic-row.is-ai-active{background:rgba(56,189,248,.08);box-shadow:inset 3px 0 #38bdf8}.fp-node.is-ai-selected .fp-icon{box-shadow:0 0 24px rgba(56,189,248,.65);border-color:#bae6fd}.ai-pulse{animation:ai-context-pulse .45s ease}@keyframes ai-context-pulse{50%{background:#10334a}}
 .poster{max-width:1600px;margin:0 auto;background:#0b1220;padding:14px 18px 20px;color:var(--ink)}.poster-section{background:#1e293b;padding:12px 16px;margin:0 -18px;border-top:1px solid #334155}.poster-section:first-of-type{margin-top:0;padding-top:0;background:transparent;border:none}.poster-section.pipeline{background:#0b1220;border:none;margin:12px -18px 0;padding:12px 18px 0}
@@ -293,7 +297,18 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 </style>
   <script src="/_sdk/9432170dbd2ae0df.resizing_sdk.js" type="text/javascript" integrity="sha512-FeT+58sb1f9ejWPWFjCbJvTT+SDwGV+ngrHUnlO7TWEOoqwOLj6p256kO3vOL7DIWl1cIgrobiof8v2bOigwPg=="></script>
  </head>
- <body data-template-id="__page-root" class="w-full min-h-screen ai-tutor-enabled" style="background: rgb(11, 18, 32);">
+ <body data-template-id="__page-root" class="w-full min-h-screen ai-tutor-enabled learning-nav-enabled" style="background: rgb(11, 18, 32);">
+  <nav class="roadmap-nav" id="roadmap-nav" aria-label="Learning roadmap navigation">
+   <div class="roadmap-nav-head"><div class="roadmap-nav-kicker">Learning workspace</div><h1>Data Engineering<br>Roadmap 2026</h1><p>Navigate, practise and keep evidence of mastery.</p></div>
+   <div class="roadmap-profile"><b>Development profile</b><span>Local persistence during the Neon migration</span></div>
+   <div class="roadmap-nav-progress"><div><span>Overall mastery</span><strong id="roadmap-nav-pct">0%</strong></div><div class="roadmap-nav-track"><div class="roadmap-nav-fill" id="roadmap-nav-fill"></div></div></div>
+   <div class="roadmap-nav-list">
+    <button class="roadmap-nav-btn" type="button" data-nav-target="top"><span class="roadmap-nav-icon">⌂</span><span>Overview<span class="roadmap-nav-count">Roadmap at a glance</span></span></button>
+    <button class="roadmap-nav-btn" type="button" data-nav-target="pipeline"><span class="roadmap-nav-icon">↝</span><span>Live Pipeline<span class="roadmap-nav-count">Interactive data journey</span></span></button>
+    <div id="roadmap-nav-sections"></div>
+   </div>
+  </nav>
+  <button class="roadmap-nav-toggle" type="button" onclick="toggleRoadmapNav(true)">Roadmap</button>
   <aside class="ai-tutor-shell" id="ai-tutor" aria-label="AI learning tutor">
    <div class="ai-tutor-head">
     <div class="ai-tutor-brand"><div class="ai-tutor-logo">AI</div><div><b>AI Learning Launcher</b><span>Use your own AI account</span></div></div>
@@ -1688,6 +1703,7 @@ const sDone=section.topics.filter(t=>completionMap[section.id+'::'+t.t]).length;
 el.querySelector('.section-pct').textContent=`${sDone}/${section.topics.length}`;
 el.querySelector('.progress-fill').style.width=(sDone/section.topics.length*100)+'%';
 });
+if(window.syncLearningNav)window.syncLearningNav();
 }
 
 function toggleSection(id){
@@ -3130,6 +3146,34 @@ IMPORTANT
  document.querySelectorAll('[data-ai-action]').forEach(btn=>btn.addEventListener('click',function(){const action=btn.dataset.aiAction;addMessage('user',btn.textContent.trim());setTimeout(()=>addMessage('tutor',tutorReply(action,'')),180);}));
  try{providerSelect.value=localStorage.getItem('roadmap_preferred_ai_v1')||'claude';}catch(e){providerSelect.value='claude';}
  providerSelect.addEventListener('change',refreshProviderButton);launchBtn.addEventListener('click',launchPreferredAi);refreshProviderButton();
+ function buildLearningNav(){
+  const host=document.getElementById('roadmap-nav-sections');if(!host||typeof SECTIONS==='undefined')return;
+  host.innerHTML='';
+  SECTIONS.forEach(function(section,index){
+   const btn=document.createElement('button');btn.type='button';btn.className='roadmap-nav-btn';btn.dataset.section=section.id;
+   const icon=document.createElement('span');icon.className='roadmap-nav-icon';icon.textContent=String(index);
+   const copy=document.createElement('span');copy.textContent=section.name.replace(/^\d+\.\s*/, '').split(' - ')[0];
+   const count=document.createElement('span');count.className='roadmap-nav-count';count.dataset.navCount=section.id;count.textContent='0 / '+section.topics.length+' complete';
+   copy.appendChild(count);btn.append(icon,copy);btn.addEventListener('click',function(){
+    document.querySelectorAll('.roadmap-nav-btn.is-active').forEach(x=>x.classList.remove('is-active'));btn.classList.add('is-active');
+    if(typeof scrollToSection==='function')scrollToSection(section.id);window.toggleRoadmapNav(false);
+   });host.appendChild(btn);
+  });
+  window.syncLearningNav();
+ }
+ window.syncLearningNav=function(){
+  try{
+   const total=ALL_TOPICS.length;const done=ALL_TOPICS.filter(t=>completionMap[t]).length;const pct=total?Math.round(done/total*100):0;
+   const pctEl=document.getElementById('roadmap-nav-pct');const fill=document.getElementById('roadmap-nav-fill');if(pctEl)pctEl.textContent=pct+'%';if(fill)fill.style.width=pct+'%';
+   SECTIONS.forEach(function(section){const complete=section.topics.filter(t=>completionMap[section.id+'::'+t.t]).length;const el=document.querySelector('[data-nav-count="'+section.id+'"]');if(el)el.textContent=complete+' / '+section.topics.length+' complete';});
+  }catch(e){}
+ };
+ document.querySelectorAll('[data-nav-target]').forEach(function(btn){btn.addEventListener('click',function(){
+  document.querySelectorAll('.roadmap-nav-btn.is-active').forEach(x=>x.classList.remove('is-active'));btn.classList.add('is-active');
+  if(btn.dataset.navTarget==='top')window.scrollTo({top:0,behavior:'smooth'});else{const target=document.querySelector('.poster-section.pipeline')||document.querySelector('.pipeline-lab');if(target)target.scrollIntoView({behavior:'smooth',block:'start'});}window.toggleRoadmapNav(false);
+ });});
+ window.toggleRoadmapNav=function(open){const nav=document.getElementById('roadmap-nav');if(window.innerWidth>=1560){if(open===false)return;}nav.classList.toggle('is-open',open!==false);};
+ buildLearningNav();
  document.getElementById('ai-tutor-form').addEventListener('submit',function(e){e.preventDefault();const q=input.value.trim();if(!q)return;addMessage('user',q);input.value='';setTimeout(()=>addMessage('tutor',tutorReply('ask',q)),220);});
  window.toggleAiTutor=function(open){if(window.innerWidth>1280){tutor.classList.toggle('is-hidden',open===false);if(open===true)tutor.classList.remove('is-hidden');}else{tutor.classList.toggle('is-open',open!==false);}};
  window.aiTutorSelectSection=function(sectionId){const section=(window.SECTIONS||[]).find(s=>s.id===sectionId);if(section)updateContext({type:'roadmap section',title:section.name,section:section.id,detail:section.topics.length+' learning objectives in this section'},true);};
