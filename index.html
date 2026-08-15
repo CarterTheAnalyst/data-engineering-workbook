@@ -37,6 +37,8 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 @media(max-width:1559px){.roadmap-nav-toggle{display:block}}
 @media(max-width:1280px){.ai-tutor-shell{transform:translateX(100%);transition:transform .22s ease;width:min(390px,94vw)}.ai-tutor-shell.is-open{transform:translateX(0)}.ai-tutor-toggle{display:block}.ai-tutor-close{display:block;border:0;background:transparent;color:#94a3b8;font-size:20px;cursor:pointer}}
 .topic-row.is-ai-active{background:rgba(56,189,248,.08);box-shadow:inset 3px 0 #38bdf8}.fp-node.is-ai-selected .fp-icon{box-shadow:0 0 24px rgba(56,189,248,.65);border-color:#bae6fd}.ai-pulse{animation:ai-context-pulse .45s ease}@keyframes ai-context-pulse{50%{background:#10334a}}
+.topic-row input[data-topic]{display:none}.topic-row label{position:relative;padding-right:30px!important}.topic-row label:after{content:"→";position:absolute;right:10px;color:#557086;font-size:13px}.topic-row.is-guide-active label{background:#0c2538!important;border-color:#38bdf8!important}.topic-row.is-guide-complete label:after{content:"✓";color:#4ade80;font-weight:900}.resource-add-row{display:none!important}
+.learning-guide{flex:1;overflow-y:auto;padding:12px}.guide-empty{padding:18px 12px;color:#7690a5;font-size:10px;line-height:1.55;text-align:center}.guide-block{margin-bottom:11px;border:1px solid #203b51;border-radius:9px;background:#0a1724;overflow:hidden}.guide-block-head{padding:7px 9px;border-bottom:1px solid #1c3448;color:#67e8f9;font-size:7.5px;font-weight:900;text-transform:uppercase;letter-spacing:.55px}.guide-block-body{padding:9px 10px;color:#c8d7e3;font-size:9.5px;line-height:1.52;white-space:pre-wrap}.guide-code{margin:0;overflow:auto;background:#050d16;color:#bae6fd;font:8.5px/1.55 'SF Mono',Consolas,monospace;padding:10px;white-space:pre}.guide-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:11px 0}.guide-btn{min-height:35px;border-radius:8px;font:800 8.5px 'DM Sans',sans-serif;cursor:pointer}.guide-btn.practice{border:1px solid #38bdf8;background:#0c3450;color:#e0f2fe}.guide-btn.complete{border:1px solid #22c55e;background:#124126;color:#dcfce7}.guide-btn.complete.is-done{background:#166534}.guide-account-note{padding:8px 10px;border:1px dashed #38536a;border-radius:8px;color:#7890a3;font-size:8px;line-height:1.4}.guide-resource-note{color:#8fa8ba;font-size:8px;line-height:1.45}
 .poster{max-width:1600px;margin:0 auto;background:#0b1220;padding:14px 18px 20px;color:var(--ink)}.poster-section{background:#1e293b;padding:12px 16px;margin:0 -18px;border-top:1px solid #334155}.poster-section:first-of-type{margin-top:0;padding-top:0;background:transparent;border:none}.poster-section.pipeline{background:#0b1220;border:none;margin:12px -18px 0;padding:12px 18px 0}
 /* Top grid */
 .top-grid{display:grid;grid-template-columns:1fr;gap:12px;align-items:center;margin-bottom:8px}
@@ -309,32 +311,36 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
    </div>
   </nav>
   <button class="roadmap-nav-toggle" type="button" onclick="toggleRoadmapNav(true)">Roadmap</button>
-  <aside class="ai-tutor-shell" id="ai-tutor" aria-label="AI learning tutor">
+  <aside class="ai-tutor-shell" id="ai-tutor" aria-label="Learning guide">
    <div class="ai-tutor-head">
-    <div class="ai-tutor-brand"><div class="ai-tutor-logo">AI</div><div><b>AI Learning Launcher</b><span>Use your own AI account</span></div></div>
-    <div class="ai-tutor-status"><i></i><span>No API cost</span></div>
-    <button class="ai-tutor-close" type="button" onclick="toggleAiTutor(false)" aria-label="Close tutor">×</button>
+    <div class="ai-tutor-brand"><div class="ai-tutor-logo">✓</div><div><b>Learning Guide</b><span>Lesson · worked example · practice</span></div></div>
+    <div class="ai-tutor-status"><i></i><span>Personal progress</span></div>
+    <button class="ai-tutor-close" type="button" onclick="toggleAiTutor(false)" aria-label="Close guide">×</button>
    </div>
-   <div class="ai-tutor-context" id="ai-context-card"><small>Current learning context</small><strong id="ai-context-title">Welcome to your roadmap</strong><span id="ai-context-meta">Select a topic or a pipeline component. I will follow your learning context here.</span></div>
-   <div class="ai-launch-bar">
+   <div class="ai-tutor-context" id="ai-context-card" style="display:none"><small>Current learning context</small><strong id="ai-context-title">Welcome to your roadmap</strong><span id="ai-context-meta">Select a topic.</span></div>
+   <div class="ai-launch-bar" style="display:none">
     <select class="ai-provider-select" id="ai-provider" aria-label="Preferred AI"><option value="claude">Claude</option><option value="chatgpt">ChatGPT</option><option value="gemini">Gemini</option></select>
     <button class="ai-launch-btn" id="ai-launch-btn" type="button">Copy prompt &amp; open Claude ↗</button>
    </div>
-   <div class="ai-tutor-actions">
+   <div class="ai-tutor-actions" style="display:none">
     <button class="ai-tutor-chip" type="button" data-ai-action="explain">Explain simply</button>
     <button class="ai-tutor-chip" type="button" data-ai-action="example">Real example</button>
     <button class="ai-tutor-chip" type="button" data-ai-action="exercise">Generate exercise</button>
     <button class="ai-tutor-chip" type="button" data-ai-action="quiz">Quiz me</button>
    </div>
-   <div class="ai-tutor-messages" id="ai-messages" aria-live="polite">
+   <div class="ai-tutor-messages" id="ai-messages" aria-live="polite" style="display:none">
     <div class="ai-message tutor"><span class="ai-label">Roadmap Tutor</span>Welcome! Click any roadmap item or pipeline component. I will explain it here without opening another window.</div>
    </div>
-   <form class="ai-tutor-compose" id="ai-tutor-form">
+   <form class="ai-tutor-compose" id="ai-tutor-form" style="display:none">
     <div class="ai-tutor-input-wrap"><textarea class="ai-tutor-input" id="ai-tutor-input" placeholder="Ask about the selected item…"></textarea><button class="ai-tutor-send" type="submit" aria-label="Send">↑</button></div>
     <div class="ai-tutor-note"><span>Prompt copied before opening</span><span>Paste with Cmd + V</span></div>
    </form>
+   <div class="learning-guide" id="learning-guide">
+    <div class="guide-empty" id="guide-empty"><b style="color:#dbeafe">Choose a roadmap item</b><br><br>Click any topic to open its lesson, worked example and practical challenge here.</div>
+    <div id="guide-content" hidden></div>
+   </div>
   </aside>
-  <button class="ai-tutor-toggle" type="button" onclick="toggleAiTutor(true)">AI Tutor</button>
+  <button class="ai-tutor-toggle" type="button" onclick="toggleAiTutor(true)">Learning Guide</button>
   <div class="mobile-gate" id="mobile-gate">
    <div class="mobile-gate-box">
     <i data-lucide="monitor"></i>
@@ -1704,6 +1710,7 @@ el.querySelector('.section-pct').textContent=`${sDone}/${section.topics.length}`
 el.querySelector('.progress-fill').style.width=(sDone/section.topics.length*100)+'%';
 });
 if(window.syncLearningNav)window.syncLearningNav();
+if(window.refreshGuideCompletion)window.refreshGuideCompletion();
 }
 
 function toggleSection(id){
@@ -3177,6 +3184,88 @@ IMPORTANT
  document.getElementById('ai-tutor-form').addEventListener('submit',function(e){e.preventDefault();const q=input.value.trim();if(!q)return;addMessage('user',q);input.value='';setTimeout(()=>addMessage('tutor',tutorReply('ask',q)),220);});
  window.toggleAiTutor=function(open){if(window.innerWidth>1280){tutor.classList.toggle('is-hidden',open===false);if(open===true)tutor.classList.remove('is-hidden');}else{tutor.classList.toggle('is-open',open!==false);}};
  window.aiTutorSelectSection=function(sectionId){const section=(window.SECTIONS||[]).find(s=>s.id===sectionId);if(section)updateContext({type:'roadmap section',title:section.name,section:section.id,detail:section.topics.length+' learning objectives in this section'},true);};
+})();
+ </script>
+ <script>
+/* Deterministic learning guide: curated lessons and worked exercises.
+   No AI service, prompt launcher, or external assistant is required. */
+(function(){
+ const guideEmpty=document.getElementById('guide-empty');
+ const guideContent=document.getElementById('guide-content');
+ let selectedTopicId='';
+ function esc(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ function material(title,section){
+  const key=(title+' '+section).toLowerCase();
+  if(/select|where|group by|having/.test(key))return{
+   lesson:'SELECT définit les colonnes retournées. WHERE filtre les lignes avant le calcul. GROUP BY rassemble les lignes qui partagent une clé. HAVING filtre les groupes après une agrégation.',
+   solved:`SELECT\n  c.full_name,\n  c.city,\n  COUNT(o.order_id) AS order_count,\n  SUM(o.total_amount) AS total_revenue\nFROM company.customers AS c\nJOIN company.orders AS o\n  ON o.customer_id = c.customer_id\nWHERE o.status = 'completed'\nGROUP BY c.customer_id, c.full_name, c.city\nHAVING SUM(o.total_amount) > 100\nORDER BY total_revenue DESC;`,
+   why:'WHERE élimine d’abord les commandes non terminées. GROUP BY produit une ligne par client. COUNT et SUM calculent les indicateurs. HAVING conserve seulement les clients dont le revenu agrégé dépasse 100.',
+   challenge:'Modifie la requête pour afficher uniquement les villes dont le revenu terminé total dépasse 150. Retourne city, order_count et total_revenue.',lab:'sql_foundation'};
+  if(/join/.test(key))return{
+   lesson:'Un JOIN relie des tables grâce à une clé. INNER JOIN conserve les correspondances. LEFT JOIN conserve toutes les lignes de gauche, même sans correspondance.',
+   solved:`SELECT\n  c.customer_id,\n  c.full_name,\n  COUNT(o.order_id) AS order_count\nFROM company.customers AS c\nLEFT JOIN company.orders AS o\n  ON o.customer_id = c.customer_id\nGROUP BY c.customer_id, c.full_name\nORDER BY c.customer_id;`,
+   why:'LEFT JOIN est indispensable ici : un client sans commande reste visible. COUNT(o.order_id) retourne alors 0, car COUNT ignore les valeurs NULL.',
+   challenge:'Affiche chaque produit avec son nom de catégorie et son fournisseur en reliant company.products, company.categories et company.suppliers.',lab:'sql_foundation'};
+  if(/case/.test(key))return{
+   lesson:'CASE ajoute une logique conditionnelle dans une requête SQL et transforme des règles métier en catégories explicites.',
+   solved:`SELECT\n  order_id,\n  total_amount,\n  CASE\n    WHEN total_amount >= 200 THEN 'high'\n    WHEN total_amount >= 75 THEN 'medium'\n    ELSE 'low'\n  END AS order_value_band\nFROM company.orders\nORDER BY total_amount DESC;`,
+   why:'Les conditions sont évaluées de haut en bas. Le premier WHEN vrai détermine la valeur; ELSE couvre tous les cas restants.',
+   challenge:'Classe les clients selon status et présence de email : active_ready, active_missing_email ou inactive.',lab:'sql_foundation'};
+  if(/cte|common table/.test(key))return{
+   lesson:'Une CTE nomme un résultat intermédiaire avec WITH. Elle rend une transformation complexe plus lisible et plus facile à tester.',
+   solved:`WITH completed_orders AS (\n  SELECT order_date, total_amount\n  FROM company.orders\n  WHERE status = 'completed'\n)\nSELECT\n  DATE_TRUNC('month', order_date) AS month,\n  SUM(total_amount) AS revenue\nFROM completed_orders\nGROUP BY month\nORDER BY month;`,
+   why:'La CTE isole d’abord les commandes terminées. La requête finale ne s’occupe plus que du regroupement mensuel.',
+   challenge:'Crée une CTE contenant le revenu par client, puis retourne uniquement les trois clients avec le revenu le plus élevé.',lab:'sql_foundation'};
+  if(/python|pandas|polars|dataframe|list|dict|function|class|generator|pathlib/.test(key))return{
+   lesson:'Cette compétence Python doit être comprise par une petite transformation reproductible : données d’entrée, opération explicite, résultat vérifiable et gestion des cas limites.',
+   solved:`customers = [\n    {"name": "Ana", "country": "Chile", "active": True},\n    {"name": "Luis", "country": "Chile", "active": False},\n    {"name": "Priya", "country": "India", "active": True},\n]\n\nactive_names = [\n    customer["name"]\n    for customer in customers\n    if customer["active"]\n]\n\nprint(active_names)  # ['Ana', 'Priya']`,
+   why:'La compréhension parcourt chaque dictionnaire, applique le filtre active, puis extrait uniquement name. Le résultat est une nouvelle liste et les données originales ne sont pas modifiées.',
+   challenge:'À partir de cette liste, construis un dictionnaire contenant le nombre de clients actifs par pays.',lab:'python_foundation'};
+  if(/data model|dimensional|star schema|fact|dimension/.test(key))return{
+   lesson:'La modélisation organise les données selon les questions métier. Une table de faits contient les événements mesurables; les dimensions décrivent leurs axes d’analyse.',
+   solved:'Cas résolu — Ventes\n\nFactSales : order_id, date_key, customer_key, product_key, quantity, revenue\nDimDate : date_key, day, month, quarter, year\nDimCustomer : customer_key, customer_id, city, segment\nDimProduct : product_key, product_id, category, supplier',
+   why:'Le grain de FactSales est une ligne de commande. Les clés de dimensions permettent d’agréger revenue par période, client, ville, produit ou catégorie sans dupliquer les descriptions.',
+   challenge:'Définis le grain, les mesures et les dimensions d’un modèle consacré aux exécutions de pipelines.',lab:section};
+  if(/quality|test|validation|null|unique/.test(key))return{
+   lesson:'La qualité des données transforme les attentes en contrôles observables : complétude, unicité, validité, cohérence, fraîcheur et intégrité référentielle.',
+   solved:'Cas résolu — company.orders\n\n1. order_id est unique et non NULL — critique\n2. total_amount >= 0 — critique\n3. status appartient à completed/pending/cancelled — critique\n4. customer_id existe dans customers lorsqu’il est renseigné — critique\n5. order_date n’est pas dans le futur — avertissement',
+   why:'Chaque règle possède une cible, une condition, une sévérité et une action. Une règle critique bloque la publication; un avertissement peut déclencher une investigation.',
+   challenge:'Ajoute trois contrôles pour company.payments et précise pour chacun la réaction du pipeline en cas d’échec.',lab:section};
+  if(/airflow|orchestration|dag|schedule/.test(key))return{
+   lesson:'L’orchestration coordonne des tâches, leurs dépendances, horaires, reprises et états. Elle ne remplace pas le code de transformation.',
+   solved:'DAG résolu\n\nwait_for_source → extract_orders → validate_schema\nvalidate_schema → [load_bronze, quarantine_invalid]\nload_bronze → build_silver → run_quality_tests → publish_gold → notify',
+   why:'Les tâches sont petites et idempotentes. La qualité forme une porte avant publication. La branche de quarantaine conserve les erreurs sans bloquer leur analyse.',
+   challenge:'Ajoute une stratégie de retry et indique quelles tâches ne doivent jamais être relancées sans contrôle.',lab:section};
+  if(/governance|catalog|lineage|privacy/.test(key))return{
+   lesson:'La gouvernance rend les données compréhensibles, attribuées, traçables et correctement protégées.',
+   solved:'Fiche résolue — customer_email\n\nOwner : Customer Operations\nDefinition : adresse principale validée du client\nClassification : Personal Data\nRetention : durée du contrat + politique légale\nQuality : format valide, taux de NULL suivi\nLineage : CRM → Bronze → DimCustomer → Campaign dashboard',
+   why:'Une définition seule ne suffit pas. Ownership, classification, qualité et lineage permettent de décider qui peut utiliser la donnée et comment réagir en cas de problème.',
+   challenge:'Crée la fiche de gouvernance de total_amount dans company.orders.',lab:section};
+  return{
+   lesson:'Cette compétence doit être étudiée dans le contexte d’un pipeline complet : son objectif, ses entrées, ses sorties, ses dépendances et ses modes de défaillance.',
+   solved:`Cas résolu — ${title}\n\nObjectif : définir le problème résolu.\nEntrées : identifier les données et contrats requis.\nTraitement : décrire les étapes et contrôles.\nSorties : préciser le produit livré et ses consommateurs.\nÉchec : prévoir détection, confinement et reprise.`,
+   why:'Cette structure relie la théorie à un système exploitable. Elle évite d’apprendre un outil isolé sans comprendre sa responsabilité dans le flux.',
+   challenge:'Applique les cinq questions — objectif, entrées, traitement, sorties et échec — à Horizon Estates.',lab:section};
+ }
+ function openGuide(row){
+  const cb=row.querySelector('input[data-topic]');const label=row.querySelector('span.text-slate-300');if(!cb||!label)return;
+  selectedTopicId=cb.dataset.topic;const parts=selectedTopicId.split('::');const title=label.textContent.trim();const section=parts[0]||'';const item=material(title,section);const done=!!completionMap[selectedTopicId];
+  document.querySelectorAll('.topic-row.is-guide-active').forEach(x=>x.classList.remove('is-guide-active'));row.classList.add('is-guide-active');
+  guideEmpty.hidden=true;guideContent.hidden=false;guideContent.innerHTML=`
+   <div class="guide-block"><div class="guide-block-head">${esc(title)}</div><div class="guide-block-body">${esc(item.lesson)}</div></div>
+   <div class="guide-block"><div class="guide-block-head">Worked example</div><pre class="guide-code">${esc(item.solved)}</pre></div>
+   <div class="guide-block"><div class="guide-block-head">Why this solution works</div><div class="guide-block-body">${esc(item.why)}</div></div>
+   <div class="guide-block"><div class="guide-block-head">Your practice challenge</div><div class="guide-block-body">${esc(item.challenge)}</div></div>
+   <div class="guide-actions"><button type="button" class="guide-btn practice" id="guide-practice">Open practice area</button><button type="button" class="guide-btn complete ${done?'is-done':''}" id="guide-complete">${done?'Mastered ✓':'Mark as mastered'}</button></div>
+   <div class="guide-account-note"><b>Personal progress</b><br>Completion is stored locally during development. It will move to the signed-in user account in Neon.</div>
+   <p class="guide-resource-note">The Section Resources panel contains curated documentation and courses only; empty custom-resource fields have been removed.</p>`;
+  document.getElementById('guide-practice').onclick=function(){const target=document.getElementById('sec-'+item.lab)||document.getElementById('sec-'+section);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});const content=document.getElementById('content-'+(item.lab||section));if(content&&!content.classList.contains('open'))toggleSection(item.lab||section);}};
+  document.getElementById('guide-complete').onclick=async function(){if(!completionMap[selectedTopicId])await toggleTopic(selectedTopicId,true);row.classList.add('is-guide-complete');this.classList.add('is-done');this.textContent='Mastered ✓';if(window.syncLearningNav)window.syncLearningNav();};
+  if(done)row.classList.add('is-guide-complete');if(window.innerWidth<=1280)toggleAiTutor(true);
+ }
+ document.addEventListener('click',function(event){const row=event.target.closest('.topic-row');if(row)openGuide(row);});
+ window.refreshGuideCompletion=function(){document.querySelectorAll('.topic-row').forEach(function(row){const cb=row.querySelector('input[data-topic]');if(cb)row.classList.toggle('is-guide-complete',!!completionMap[cb.dataset.topic]);});};
+ setTimeout(window.refreshGuideCompletion,0);
 })();
  </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a18d0b2d626ea4d0',t:'MTc4MzY2MDAzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
