@@ -299,18 +299,7 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 </style>
   <script src="/_sdk/9432170dbd2ae0df.resizing_sdk.js" type="text/javascript" integrity="sha512-FeT+58sb1f9ejWPWFjCbJvTT+SDwGV+ngrHUnlO7TWEOoqwOLj6p256kO3vOL7DIWl1cIgrobiof8v2bOigwPg=="></script>
  </head>
- <body data-template-id="__page-root" class="w-full min-h-screen ai-tutor-enabled learning-nav-enabled" style="background: rgb(11, 18, 32);">
-  <nav class="roadmap-nav" id="roadmap-nav" aria-label="Learning roadmap navigation">
-   <div class="roadmap-nav-head"><div class="roadmap-nav-kicker">Learning workspace</div><h1>Data Engineering<br>Roadmap 2026</h1><p>Navigate, practise and keep evidence of mastery.</p></div>
-   <div class="roadmap-profile"><b>Development profile</b><span>Local persistence during the Neon migration</span></div>
-   <div class="roadmap-nav-progress"><div><span>Overall mastery</span><strong id="roadmap-nav-pct">0%</strong></div><div class="roadmap-nav-track"><div class="roadmap-nav-fill" id="roadmap-nav-fill"></div></div></div>
-   <div class="roadmap-nav-list">
-    <button class="roadmap-nav-btn" type="button" data-nav-target="top"><span class="roadmap-nav-icon">⌂</span><span>Overview<span class="roadmap-nav-count">Roadmap at a glance</span></span></button>
-    <button class="roadmap-nav-btn" type="button" data-nav-target="pipeline"><span class="roadmap-nav-icon">↝</span><span>Live Pipeline<span class="roadmap-nav-count">Interactive data journey</span></span></button>
-    <div id="roadmap-nav-sections"></div>
-   </div>
-  </nav>
-  <button class="roadmap-nav-toggle" type="button" onclick="toggleRoadmapNav(true)">Roadmap</button>
+ <body data-template-id="__page-root" class="w-full min-h-screen ai-tutor-enabled" style="background: rgb(11, 18, 32);">
   <aside class="ai-tutor-shell" id="ai-tutor" aria-label="Learning guide">
    <div class="ai-tutor-head">
     <div class="ai-tutor-brand"><div class="ai-tutor-logo">✓</div><div><b>Learning Guide</b><span>Lesson · worked example · practice</span></div></div>
@@ -3197,29 +3186,44 @@ IMPORTANT
  function material(title,section){
   const key=(title+' '+section).toLowerCase();
   if(/select|where|group by|having/.test(key))return{
-   lesson:'SELECT définit les colonnes retournées. WHERE filtre les lignes avant le calcul. GROUP BY rassemble les lignes qui partagent une clé. HAVING filtre les groupes après une agrégation.',
+   lesson:'Le point important n’est pas la syntaxe de SELECT : c’est la traduction fiable d’une question métier en grain, filtres, mesures et règle d’éligibilité.',
+   business:'Finance demande une liste exploitable des clients dont le revenu réellement finalisé dépasse 100. La sortie doit contenir le client, sa ville, le nombre de commandes terminées et le revenu total. Les commandes pending ou cancelled ne doivent jamais influencer les indicateurs.',
+   requirement:'Une ligne par client éligible. Les métriques doivent être calculées uniquement sur status = completed. Le seuil de 100 s’applique au revenu total du client, pas à chaque commande individuelle.',
    solved:`SELECT\n  c.full_name,\n  c.city,\n  COUNT(o.order_id) AS order_count,\n  SUM(o.total_amount) AS total_revenue\nFROM company.customers AS c\nJOIN company.orders AS o\n  ON o.customer_id = c.customer_id\nWHERE o.status = 'completed'\nGROUP BY c.customer_id, c.full_name, c.city\nHAVING SUM(o.total_amount) > 100\nORDER BY total_revenue DESC;`,
-   why:'WHERE élimine d’abord les commandes non terminées. GROUP BY produit une ligne par client. COUNT et SUM calculent les indicateurs. HAVING conserve seulement les clients dont le revenu agrégé dépasse 100.',
+   walkthrough:'SELECT c.full_name, c.city — expose les dimensions demandées par Finance.\nCOUNT(o.order_id) — compte les commandes appartenant au groupe client.\nSUM(o.total_amount) — calcule la mesure financière sur ce même groupe.\nFROM/JOIN — relie l’identité client aux événements de commande par customer_id.\nWHERE o.status = completed — retire les événements non comptabilisables avant tout agrégat.\nGROUP BY c.customer_id, c.full_name, c.city — fixe le grain à une ligne par client; customer_id évite de fusionner deux homonymes.\nHAVING SUM(...) > 100 — applique le seuil au résultat agrégé, contrairement à WHERE qui filtrerait les lignes sources.\nORDER BY — rend la sortie directement exploitable en priorisant les plus gros revenus.',
+   why:'La solution respecte les quatre dimensions du besoin : population correcte grâce à WHERE, grain correct grâce à GROUP BY, mesures correctes avec COUNT/SUM et règle d’éligibilité correcte avec HAVING. Une erreur fréquente serait total_amount > 100 dans WHERE : elle supprimerait les petites commandes avant la somme et répondrait à une autre question métier.',
    challenge:'Modifie la requête pour afficher uniquement les villes dont le revenu terminé total dépasse 150. Retourne city, order_count et total_revenue.',lab:'sql_foundation'};
   if(/join/.test(key))return{
-   lesson:'Un JOIN relie des tables grâce à une clé. INNER JOIN conserve les correspondances. LEFT JOIN conserve toutes les lignes de gauche, même sans correspondance.',
+   lesson:'Choisir un JOIN revient à choisir la population analytique. Ce n’est pas seulement connecter deux tables : le type de JOIN détermine quels objets métier peuvent disparaître du résultat.',
+   business:'Customer Success veut mesurer l’adoption en affichant tous les clients, y compris ceux qui n’ont encore passé aucune commande. Une absence de commande est une information métier et ne doit pas faire disparaître le client.',
+   requirement:'Une ligne par client enregistré. order_count doit valoir 0 lorsqu’aucune commande n’existe. Aucun client ne doit être exclu à cause de l’absence de correspondance.',
    solved:`SELECT\n  c.customer_id,\n  c.full_name,\n  COUNT(o.order_id) AS order_count\nFROM company.customers AS c\nLEFT JOIN company.orders AS o\n  ON o.customer_id = c.customer_id\nGROUP BY c.customer_id, c.full_name\nORDER BY c.customer_id;`,
-   why:'LEFT JOIN est indispensable ici : un client sans commande reste visible. COUNT(o.order_id) retourne alors 0, car COUNT ignore les valeurs NULL.',
+   walkthrough:'FROM company.customers c — définit customers comme population de départ.\nLEFT JOIN company.orders o — conserve cette population complète.\nON o.customer_id = c.customer_id — exprime la relation métier sans la confondre avec un filtre.\nCOUNT(o.order_id) — compte uniquement les commandes non NULL; COUNT(*) retournerait 1 pour un client sans commande à cause de la ligne préservée par LEFT JOIN.\nGROUP BY customer_id, full_name — produit une ligne par client stable, même en présence d’homonymes.',
+   why:'LEFT JOIN répond précisément au mot “tous” dans la demande. INNER JOIN mesurerait seulement les clients déjà actifs et introduirait un biais de sélection. COUNT(o.order_id), plutôt que COUNT(*), transforme correctement l’absence de commande en zéro.',
    challenge:'Affiche chaque produit avec son nom de catégorie et son fournisseur en reliant company.products, company.categories et company.suppliers.',lab:'sql_foundation'};
   if(/case/.test(key))return{
    lesson:'CASE ajoute une logique conditionnelle dans une requête SQL et transforme des règles métier en catégories explicites.',
+   business:'Operations veut segmenter les commandes en bandes de valeur afin d’adapter les contrôles et priorités de traitement, sans créer une table de référence pour cette première analyse exploratoire.',
+   requirement:'Chaque commande doit recevoir exactement une catégorie high, medium ou low. Les seuils doivent être mutuellement cohérents et les valeurs limites classées sans ambiguïté.',
    solved:`SELECT\n  order_id,\n  total_amount,\n  CASE\n    WHEN total_amount >= 200 THEN 'high'\n    WHEN total_amount >= 75 THEN 'medium'\n    ELSE 'low'\n  END AS order_value_band\nFROM company.orders\nORDER BY total_amount DESC;`,
-   why:'Les conditions sont évaluées de haut en bas. Le premier WHEN vrai détermine la valeur; ELSE couvre tous les cas restants.',
+   walkthrough:'SELECT conserve l’identifiant et le montant nécessaires à l’audit.\nCASE commence par le seuil le plus élevé : une commande de 250 est high et ne descend jamais vers medium.\nWHEN total_amount >= 75 couvre ensuite l’intervalle 75–199.99.\nELSE absorbe les valeurs inférieures à 75.\nEND AS order_value_band donne un nom métier stable à la règle calculée.',
+   why:'L’ordre descendant des seuils garantit une classification exclusive. Le résultat conserve total_amount, ce qui permet à Operations de vérifier visuellement chaque catégorie et ses limites.',
    challenge:'Classe les clients selon status et présence de email : active_ready, active_missing_email ou inactive.',lab:'sql_foundation'};
   if(/cte|common table/.test(key))return{
    lesson:'Une CTE nomme un résultat intermédiaire avec WITH. Elle rend une transformation complexe plus lisible et plus facile à tester.',
+   business:'Finance prépare un reporting mensuel récurrent. La logique qui définit le revenu reconnu doit être isolée afin que les analystes puissent la relire avant de calculer les agrégats du rapport.',
+   requirement:'Inclure uniquement les commandes completed, produire une ligne par mois et séparer clairement la règle d’éligibilité du calcul de revenu mensuel.',
    solved:`WITH completed_orders AS (\n  SELECT order_date, total_amount\n  FROM company.orders\n  WHERE status = 'completed'\n)\nSELECT\n  DATE_TRUNC('month', order_date) AS month,\n  SUM(total_amount) AS revenue\nFROM completed_orders\nGROUP BY month\nORDER BY month;`,
-   why:'La CTE isole d’abord les commandes terminées. La requête finale ne s’occupe plus que du regroupement mensuel.',
+   walkthrough:'WITH completed_orders AS (...) nomme la population financière admissible.\nLa CTE sélectionne uniquement les colonnes nécessaires au calcul suivant.\nDATE_TRUNC(month, order_date) normalise chaque date au même grain mensuel.\nSUM(total_amount) calcule la mesure au grain défini.\nGROUP BY month matérialise une ligne par mois; ORDER BY stabilise la lecture chronologique.',
+   why:'La séparation rend la définition du revenu testable indépendamment du reporting mensuel. Si Finance modifie la règle d’éligibilité, elle change la CTE sans réécrire l’agrégation.',
    challenge:'Crée une CTE contenant le revenu par client, puis retourne uniquement les trois clients avec le revenu le plus élevé.',lab:'sql_foundation'};
   if(/python|pandas|polars|dataframe|list|dict|function|class|generator|pathlib/.test(key))return{
    lesson:'Cette compétence Python doit être comprise par une petite transformation reproductible : données d’entrée, opération explicite, résultat vérifiable et gestion des cas limites.',
+   business:'Une ingestion CRM fournit des enregistrements clients sous forme d’objets Python. Avant publication, le pipeline doit extraire la population active pour un traitement aval sans modifier le lot brut reçu.',
+   requirement:'Retourner uniquement les noms des clients actifs, préserver la liste source et produire un résultat déterministe facile à tester.',
    solved:`customers = [\n    {"name": "Ana", "country": "Chile", "active": True},\n    {"name": "Luis", "country": "Chile", "active": False},\n    {"name": "Priya", "country": "India", "active": True},\n]\n\nactive_names = [\n    customer["name"]\n    for customer in customers\n    if customer["active"]\n]\n\nprint(active_names)  # ['Ana', 'Priya']`,
-   why:'La compréhension parcourt chaque dictionnaire, applique le filtre active, puis extrait uniquement name. Le résultat est une nouvelle liste et les données originales ne sont pas modifiées.',
+   walkthrough:'customers représente le lot brut en mémoire.\nLa compréhension crée une nouvelle liste, donc la source reste intacte.\nfor customer in customers parcourt chaque enregistrement une seule fois.\nif customer[active] exprime la règle d’éligibilité.\ncustomer[name] projette uniquement le champ requis par le consommateur.\nprint sert ici à contrôler le résultat, mais un pipeline réel retournerait ou écrirait la collection.',
+   why:'La solution sépare clairement entrée, filtre et projection. Elle satisfait la non-mutation, produit exactement la population active et peut être testée avec une assertion sur [Ana, Priya].',
    challenge:'À partir de cette liste, construis un dictionnaire contenant le nombre de clients actifs par pays.',lab:'python_foundation'};
   if(/data model|dimensional|star schema|fact|dimension/.test(key))return{
    lesson:'La modélisation organise les données selon les questions métier. Une table de faits contient les événements mesurables; les dimensions décrivent leurs axes d’analyse.',
@@ -3250,12 +3254,18 @@ IMPORTANT
  function openGuide(row){
   const cb=row.querySelector('input[data-topic]');const label=row.querySelector('span.text-slate-300');if(!cb||!label)return;
   selectedTopicId=cb.dataset.topic;const parts=selectedTopicId.split('::');const title=label.textContent.trim();const section=parts[0]||'';const item=material(title,section);const done=!!completionMap[selectedTopicId];
+  const business=item.business||('Horizon Estates doit intégrer « '+title+' » dans un flux exploitable. L’équipe attend une solution traçable qui définit clairement la population concernée, les données d’entrée, le résultat livré et le comportement en cas d’anomalie.');
+  const requirement=item.requirement||('Produire un résultat vérifiable au bon grain, avec des hypothèses explicites et suffisamment de contexte pour qu’un autre data engineer puisse tester, maintenir et opérer la solution.');
+  const walkthrough=item.walkthrough||('1. Identifier le grain métier attendu et la population analysée.\n2. Choisir les sources et vérifier leurs clés ou contrats.\n3. Appliquer les transformations dans un ordre qui préserve le sens métier.\n4. Contrôler la sortie avec un cas nominal et un cas limite.\n5. Documenter la décision, le risque principal et le mécanisme de reprise.');
   document.querySelectorAll('.topic-row.is-guide-active').forEach(x=>x.classList.remove('is-guide-active'));row.classList.add('is-guide-active');
   guideEmpty.hidden=true;guideContent.hidden=false;guideContent.innerHTML=`
-   <div class="guide-block"><div class="guide-block-head">${esc(title)}</div><div class="guide-block-body">${esc(item.lesson)}</div></div>
-   <div class="guide-block"><div class="guide-block-head">Worked example</div><pre class="guide-code">${esc(item.solved)}</pre></div>
-   <div class="guide-block"><div class="guide-block-head">Why this solution works</div><div class="guide-block-body">${esc(item.why)}</div></div>
-   <div class="guide-block"><div class="guide-block-head">Your practice challenge</div><div class="guide-block-body">${esc(item.challenge)}</div></div>
+   <div class="guide-block"><div class="guide-block-head">${esc(title)} — engineering intent</div><div class="guide-block-body">${esc(item.lesson)}</div></div>
+   <div class="guide-block"><div class="guide-block-head">Business context</div><div class="guide-block-body">${esc(business)}</div></div>
+   <div class="guide-block"><div class="guide-block-head">Acceptance requirement</div><div class="guide-block-body">${esc(requirement)}</div></div>
+   <div class="guide-block"><div class="guide-block-head">Worked solution</div><pre class="guide-code">${esc(item.solved)}</pre></div>
+   <div class="guide-block"><div class="guide-block-head">Code / solution walkthrough</div><div class="guide-block-body">${esc(walkthrough)}</div></div>
+   <div class="guide-block"><div class="guide-block-head">Why it satisfies the requirement</div><div class="guide-block-body">${esc(item.why)}</div></div>
+   <div class="guide-block"><div class="guide-block-head">Practice extension</div><div class="guide-block-body">${esc(item.challenge)}</div></div>
    <div class="guide-actions"><button type="button" class="guide-btn practice" id="guide-practice">Open practice area</button><button type="button" class="guide-btn complete ${done?'is-done':''}" id="guide-complete">${done?'Mastered ✓':'Mark as mastered'}</button></div>
    <div class="guide-account-note"><b>Personal progress</b><br>Completion is stored locally during development. It will move to the signed-in user account in Neon.</div>
    <p class="guide-resource-note">The Section Resources panel contains curated documentation and courses only; empty custom-resource fields have been removed.</p>`;
