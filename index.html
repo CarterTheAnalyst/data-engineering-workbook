@@ -232,6 +232,17 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .section-block-toggle .chev{transition:transform .2s ease;font-size:16px;color:#e2e8f0;font-weight:900;line-height:1}
 .section-panel{display:none;padding:12px 14px;border-top:1px solid #334155;background:#111827}
 .topics-panel{padding:9px 10px;background:#0f172a;max-height:380px;overflow:auto}
+.priority-checklist-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #334155;border-radius:8px;overflow:hidden;background:#0b1220}
+.priority-checklist-group{min-width:0;border-right:1px solid #334155;background:#0f172a}
+.priority-checklist-group:last-child{border-right:0}
+.priority-group-toggle{width:100%;min-height:48px;padding:8px 10px;border:0;border-bottom:2px solid var(--priority-color);background:color-mix(in srgb,var(--priority-color) 14%,#111827);color:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;text-align:left}
+.priority-group-toggle:hover{background:color-mix(in srgb,var(--priority-color) 22%,#111827)}
+.priority-group-title{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:800;line-height:1.15}
+.priority-group-dot{width:9px;height:9px;border-radius:50%;background:var(--priority-color);flex-shrink:0}
+.priority-group-count{font-size:8px;font-weight:700;color:#cbd5e1;white-space:nowrap}
+.priority-group-chevron{font-size:14px;color:#cbd5e1;transition:transform .2s}
+.priority-group-panel{max-height:330px;overflow:auto;padding:6px;background:#0f172a}
+@media(max-width:820px){.priority-checklist-grid{grid-template-columns:1fr}.priority-checklist-group{border-right:0;border-bottom:1px solid #334155}.priority-checklist-group:last-child{border-bottom:0}.priority-group-panel{max-height:260px}}
 .topic-row label{background:#111827;border:1px solid transparent;margin:4px 0;border-radius:7px}
 .topic-row label:hover{background:#1e293b;border-color:#334155}
 .resources-block .section-panel{display:block;flex:1;overflow:auto;max-height:380px}
@@ -1520,6 +1531,34 @@ ${lang==='sql'?`<div class="sql-tables-panel" id="tablespanel-${safeId}">
 </div>`;
 }
 
+function renderPriorityChecklist(section){
+const groups=[
+{code:'g',label:'MUST LEARN',color:'#22c55e',open:true},
+{code:'y',label:'SHOULD LEARN',color:'#2563eb',open:false},
+{code:'w',label:'NICE TO KNOW',color:'#d1d5db',open:false}
+];
+return `<div class="priority-checklist-grid">${groups.map(group=>{
+const items=section.topics.map((tp,idx)=>({tp,idx})).filter(item=>item.tp.p===group.code);
+return `<section class="priority-checklist-group" style="--priority-color:${group.color}">
+<button type="button" class="priority-group-toggle" id="priority-btn-${section.id}-${group.code}" aria-expanded="${group.open}" onclick="togglePriorityGroup('${section.id}','${group.code}')">
+<span class="priority-group-title"><span class="priority-group-dot"></span>${group.label}</span>
+<span class="priority-group-count">${items.length} items <span class="priority-group-chevron" id="priority-chev-${section.id}-${group.code}" style="display:inline-block;transform:${group.open?'rotate(180deg)':''}">v</span></span>
+</button>
+<div class="priority-group-panel" id="priority-panel-${section.id}-${group.code}" style="display:${group.open?'block':'none'}">
+${items.map(({tp,idx})=>{
+const tid=section.id+'::'+tp.t;
+topicIdBySafe[section.id+'_'+idx]=tid;
+return `<div class="topic-row"><label class="flex items-center gap-3 py-1.5 px-2 rounded cursor-pointer">
+<input type="checkbox" class="w-4 h-4 accent-emerald-400 flex-shrink-0" data-topic="${tid}" onchange="toggleTopic('${tid.replace(/'/g,"\\'")}',this.checked)">
+<span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${group.color}!important"></span>
+<span class="text-slate-300 text-sm">${tp.t.replace(' (program)', '')}</span>
+</label></div>`;
+}).join('')||'<div class="resource-empty">No topics in this priority.</div>'}
+</div>
+</section>`;
+}).join('')}</div>`;
+}
+
 function renderSections(){
 const container=document.getElementById('sections-container');
 if(container.children.length===0){
@@ -1551,19 +1590,7 @@ ${section.name}
 <span class="chev" id="chev-topics-${section.id}" style="transform:rotate(180deg)">v</span>
 </button>
 <div class="section-panel topics-panel" id="secpanel-topics-${section.id}" style="display:block">
-${section.topics.map((tp,idx)=>{
-const tid=section.id+'::'+tp.t;
-const safeId=section.id+'_'+idx;
-topicIdBySafe[safeId]=tid;
-const topicColor=tp.p==='g'?'#22c55e':tp.p==='y'?'#2563eb':'#d1d5db';
-return `<div class="topic-row">
-<label class="flex items-center gap-3 py-1.5 px-2 rounded cursor-pointer">
-<input type="checkbox" class="w-4 h-4 accent-emerald-400 flex-shrink-0" data-topic="${tid}" onchange="toggleTopic('${tid.replace(/'/g,"\\'")}',this.checked)">
-<span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${topicColor}!important"></span>
-<span class="text-slate-300 text-sm">${tp.t.replace(' (program)', '')}</span>
-</label>
-</div>`;
-}).join('')}
+${renderPriorityChecklist(section)}
 </div>
 </div>
 <div class="section-side-stack">
@@ -1728,6 +1755,17 @@ await activeSdk.create({topic_id:topicId,completed:true});
 }catch(e){
 console.warn('toggleTopic could not persist to the backend - your change is still safely kept in this browser\'s local mirror.',e);
 }
+}
+
+function togglePriorityGroup(sectionId,priority){
+const panel=document.getElementById('priority-panel-'+sectionId+'-'+priority);
+const button=document.getElementById('priority-btn-'+sectionId+'-'+priority);
+const chev=document.getElementById('priority-chev-'+sectionId+'-'+priority);
+if(!panel)return;
+const isOpen=panel.style.display==='block';
+panel.style.display=isOpen?'none':'block';
+if(button)button.setAttribute('aria-expanded',String(!isOpen));
+if(chev)chev.style.transform=isOpen?'':'rotate(180deg)';
 }
 
 /* Section-level panels: Section Resources and (SQL Foundation only) View Exercises + shared Practice Workspace. */
