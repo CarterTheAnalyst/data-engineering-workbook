@@ -228,8 +228,14 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .section-content.open{max-height:8000px}
 .chevron-icon{transition:transform .3s ease}
 .section-open .chevron-icon{transform:rotate(180deg)}
-.topic-row{border-radius:6px}
+.topic-row{position:relative;border-radius:6px;display:flex;align-items:center;gap:4px}
 .topic-row:hover{background:rgba(148,163,184,.06)}
+.topic-row>label{flex:1;min-width:0}
+.topic-copy-btn{position:relative;width:27px;height:27px;flex:0 0 27px;border:1px solid transparent;border-radius:7px;background:transparent;color:#64748b;display:grid;place-items:center;cursor:pointer;transition:color .15s,border-color .15s,background .15s}
+.topic-copy-btn svg{width:13px;height:13px;stroke-width:1.8}
+.topic-copy-btn:hover{color:#7dd3fc;border-color:#334155;background:#172033}
+.topic-copy-btn.is-copied{color:#86efac;border-color:#166534;background:#0d2a22}
+.topic-copy-btn.is-copied:after{content:'Copied';position:absolute;right:31px;top:50%;transform:translateY(-50%);padding:3px 7px;border-radius:6px;background:#052e25;color:#bbf7d0;font-size:8px;font-weight:800;white-space:nowrap;box-shadow:0 5px 14px rgba(2,6,23,.28);z-index:3}
 .link-input{width:100%;background:#1e293b;border:1px solid #334155;border-radius:6px;color:#e2e8f0;font-size:11px;padding:6px 8px}
 .link-input::placeholder{color:#64748b}
 .sql-tables-panel{flex:0 0 280px;min-width:220px;max-width:520px;border:1px solid #334155;border-radius:6px;background:#0f172a;padding:8px 10px;font-size:9px;max-height:320px;overflow:auto}
@@ -382,6 +388,9 @@ html[data-theme="light"] .section-block-toggle,html[data-theme="light"] .section
 html[data-theme="light"] .section-block-toggle:hover{background:#d5dee9}
 html[data-theme="light"] .topic-row label{background:#f8fafc}
 html[data-theme="light"] .topic-row label:hover{background:#eef2f7;border-color:#cbd5e1}
+html[data-theme="light"] .topic-copy-btn{color:#64748b}
+html[data-theme="light"] .topic-copy-btn:hover{color:#0369a1;border-color:#cbd5e1;background:#eaf2f8}
+html[data-theme="light"] .topic-copy-btn.is-copied{color:#166534;border-color:#86efac;background:#ecfdf5}
 html[data-theme="light"] .topic-row .text-slate-300,html[data-theme="light"] .resource-folder-head{color:#1e293b!important}
 html[data-theme="light"] .resource-item{background:#f8fafc;border-color:#cbd5e1}
 html[data-theme="light"] .resource-item.curated{background:#f5f3ff;border-color:#a855f7}
@@ -1471,6 +1480,7 @@ SECTIONS.forEach(s=>s.topics.forEach(t=>ALL_TOPICS.push(s.id+'::'+t.t)));
 let completionMap={};
 let records=[];
 const topicIdBySafe={};
+const topicCopyBySafe={};
 /* Only SQL Foundation gets an executable Practice Workspace. Every other section uses checklist progress plus Section Resources. */
 function isFoundationSection(sectionId){return sectionId==='sql_foundation';}
 
@@ -1641,14 +1651,38 @@ return section.priority==='should'?'professional':'technical';
 function renderTopicChecklist(section){
 return section.topics.map((tp,idx)=>{
 const tid=section.id+'::'+tp.t;
-topicIdBySafe[section.id+'_'+idx]=tid;
+const safeId=section.id+'_'+idx;
+topicIdBySafe[safeId]=tid;
+topicCopyBySafe[safeId]={section:section.name,topic:tp.t.replace(' (program)', '')};
 const topicColor=tp.p==='g'?'#22c55e':tp.p==='y'?'#2563eb':'#d1d5db';
 return `<div class="topic-row"><label class="flex items-center gap-3 py-1.5 px-2 rounded cursor-pointer">
 <input type="checkbox" class="w-4 h-4 accent-emerald-400 flex-shrink-0" data-topic="${tid}" onchange="toggleTopic('${tid.replace(/'/g,"\\'")}',this.checked)">
 <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:${topicColor}!important"></span>
 <span class="text-slate-300 text-sm">${tp.t.replace(' (program)', '')}</span>
-</label></div>`;
+</label><button type="button" class="topic-copy-btn" onclick="copyRoadmapItem('${safeId}',this)" aria-label="Copy this roadmap item" title="Copy item"><i data-lucide="copy"></i></button></div>`;
 }).join('');
+}
+
+async function copyRoadmapItem(safeId,button){
+const item=topicCopyBySafe[safeId];
+if(!item)return;
+const text=`${item.section}\n${item.topic}`;
+try{
+await navigator.clipboard.writeText(text);
+}catch(error){
+const fallback=document.createElement('textarea');
+fallback.value=text;
+fallback.style.position='fixed';
+fallback.style.opacity='0';
+document.body.appendChild(fallback);
+fallback.select();
+document.execCommand('copy');
+fallback.remove();
+}
+button.classList.add('is-copied');
+button.title='Copied';
+clearTimeout(button._copiedTimer);
+button._copiedTimer=setTimeout(()=>{button.classList.remove('is-copied');button.title='Copy item';},1200);
 }
 
 function renderSections(){
