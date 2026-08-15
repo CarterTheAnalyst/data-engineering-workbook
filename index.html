@@ -155,14 +155,22 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .eng-body li{margin:0.5px 0}
 @media(min-width:1024px){.eng-body li{margin:1.5px 0}}
 /* Compact, collapsible cards for the pyramid roadmap levels */
-.pyramid-card{border-radius:14px;background:linear-gradient(145deg,#07182b,#0b243b);border-color:#334155;box-shadow:0 10px 24px rgba(2,6,23,.25);transition:transform .2s,border-color .2s,box-shadow .2s}
+.pyramid-card{min-height:0!important;border-radius:14px;background:linear-gradient(145deg,#07182b,#0b243b);border-color:#334155;box-shadow:0 10px 24px rgba(2,6,23,.25);transition:transform .2s,border-color .2s,box-shadow .2s}
 .pyramid-card:hover{transform:translateY(-3px);border-color:#64748b;box-shadow:0 15px 32px rgba(2,6,23,.34)}
 .pyramid-card .found-head,.pyramid-card .layer-head,.pyramid-card .eng-head{position:relative;min-height:58px;padding:12px 42px 12px 15px;text-align:left;justify-content:flex-start;font-size:11px;letter-spacing:.1px}
 .pyramid-chevron{position:absolute;right:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);transition:transform .22s}
 .pyramid-card.is-open .pyramid-chevron{transform:translateY(-50%) rotate(180deg)}
+.pyramid-card-cover{min-height:145px;padding:20px 18px 22px;background:radial-gradient(circle at 18% 20%,rgba(56,189,248,.11),transparent 38%),#0b1b2d;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:16px}
+.pyramid-card-logo{width:54px;height:54px;border:1px solid #38bdf8;border-radius:15px;background:#0b2940;color:#7dd3fc;display:grid;place-items:center;box-shadow:0 0 22px rgba(56,189,248,.16)}
+.pyramid-card-logo svg{width:29px;height:29px;stroke-width:1.7}
+.pyramid-card-disclaimer{max-width:34ch;color:#9fb0c4;font-size:9.5px;line-height:1.45;font-weight:600;overflow-wrap:normal;word-break:normal}
+.pyramid-card.is-open .pyramid-card-cover{display:none}
+.found-card.pyramid-card.is-open{grid-column:1/-1}
+.layer-card.pyramid-card.is-open,.eng-card.pyramid-card.is-open{flex:1 1 100%}
 .pyramid-card .found-body,.pyramid-card .layer-body,.pyramid-card .eng-body{display:none;color:#dbe5f0;padding:14px 16px;font-size:9.5px;line-height:1.45;background:#0b1b2d}
 .pyramid-card.is-open .found-body,.pyramid-card.is-open .eng-body{display:block}
-.pyramid-card.is-open .layer-body{display:grid}
+.pyramid-card.is-open .layer-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.pyramid-card.is-open li{overflow-wrap:normal;word-break:normal}
 .pyramid-card-actions{display:none;padding:0 14px 14px;background:#0b1b2d}
 .pyramid-card.is-open .pyramid-card-actions{display:flex}
 .pyramid-open-checklist{width:100%;padding:8px 11px;border:1px solid #38bdf8;border-radius:8px;background:#0c2b3f;color:#bae6fd;font:800 9px 'DM Sans',sans-serif;cursor:pointer;text-align:center}
@@ -2942,6 +2950,23 @@ requestAnimationFrame(drawPipelineConnections);window.addEventListener('load',dr
 }
 
 function initPyramidCards(){
+const cardInfo={
+sql_foundation:{icon:'database',description:'Query, model and optimize data with the universal language of analytics.'},
+python_foundation:{icon:'braces',description:'Automate ingestion, transformation and operational data workflows.'},
+data_modeling_foundation:{icon:'network',description:'Turn business processes into durable facts, dimensions and relationships.'},
+sources:{icon:'plug',description:'Understand where operational, file and event data originates.'},
+ingestion:{icon:'download',description:'Collect data reliably with batch, CDC, APIs and retry patterns.'},
+storage:{icon:'hard-drive',description:'Design durable database, object storage and lakehouse layouts.'},
+transformation:{icon:'shuffle',description:'Clean, enrich and model raw data into trusted datasets.'},
+orchestration:{icon:'workflow',description:'Schedule dependencies, retries and monitored pipeline runs.'},
+data_quality:{icon:'badge-check',description:'Protect data products with tests, validation and business rules.'},
+consumption:{icon:'bar-chart-3',description:'Deliver governed data to analytics, BI, APIs and downstream products.'},
+devops_git:{icon:'git-branch',description:'Version, test, package and release data systems safely.'},
+cloud:{icon:'cloud',description:'Operate scalable data services across modern cloud platforms.'},
+governance:{icon:'shield-check',description:'Define ownership, contracts, lineage and responsible access.'},
+observability:{icon:'activity',description:'Measure freshness, failures, latency and service health.'},
+architecture:{icon:'layers',description:'Choose resilient patterns for batch, streaming and lakehouse systems.'}
+};
 document.querySelectorAll('.found-card,.layer-card,.eng-card').forEach(card=>{
 if(card.dataset.pyramidReady)return;
 card.dataset.pyramidReady='true';
@@ -2957,6 +2982,8 @@ head.setAttribute('role','button');
 head.setAttribute('tabindex','0');
 head.setAttribute('aria-expanded','false');
 head.insertAdjacentHTML('beforeend','<i data-lucide="chevron-down" class="pyramid-chevron"></i>');
+const info=cardInfo[targetId]||{icon:'book-open',description:'Explore this capability and connect it to the complete learning roadmap.'};
+head.insertAdjacentHTML('afterend',`<div class="pyramid-card-cover"><span class="pyramid-card-logo"><i data-lucide="${info.icon}"></i></span><span class="pyramid-card-disclaimer">${info.description}</span></div>`);
 const toggle=()=>{
 const open=card.classList.toggle('is-open');
 head.setAttribute('aria-expanded',String(open));
