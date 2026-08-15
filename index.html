@@ -155,7 +155,7 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .eng-body li{margin:0.5px 0}
 @media(min-width:1024px){.eng-body li{margin:1.5px 0}}
 /* Compact, collapsible cards for the pyramid roadmap levels */
-.found-row,.layer-row,.eng-row{display:grid;grid-template-columns:1fr;gap:16px;align-items:stretch}
+.found-row,.layer-row,.eng-row{display:grid;grid-template-columns:1fr;gap:16px;align-items:start}
 @media(min-width:700px){.found-row,.layer-row,.eng-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(min-width:1100px){.found-row,.layer-row,.eng-row{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .pyramid-card{min-height:0!important;width:auto!important;border-radius:16px;background:#0b1b2d;border-color:#334155;box-shadow:0 10px 28px rgba(2,6,23,.22);transition:transform .2s,border-color .2s,box-shadow .2s}
@@ -172,12 +172,12 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .pyramid-card-brand{color:#f8fafc;font-size:9px;font-weight:800;letter-spacing:.45px;text-transform:uppercase}
 .pyramid-card-disclaimer{max-width:42ch;color:#9fb0c4;font-size:10px;line-height:1.5;font-weight:500;overflow-wrap:normal;word-break:normal}
 .pyramid-card.is-open .pyramid-card-cover{display:none}
-.found-card.pyramid-card.is-open,.layer-card.pyramid-card.is-open,.eng-card.pyramid-card.is-open{grid-column:1/-1}
-.pyramid-card .found-body,.pyramid-card .layer-body,.pyramid-card .eng-body{display:none;color:#dbe5f0;padding:14px 16px;font-size:9.5px;line-height:1.45;background:#0b1b2d}
+.found-card.pyramid-card.is-open,.layer-card.pyramid-card.is-open,.eng-card.pyramid-card.is-open{grid-column:auto}
+.pyramid-card .found-body,.pyramid-card .layer-body,.pyramid-card .eng-body{display:none;color:#dbe5f0;padding:14px 16px 10px;font-size:9.5px;line-height:1.45;background:#0b1b2d}
 .pyramid-card.is-open .found-body,.pyramid-card.is-open .eng-body{display:block}
-.pyramid-card.is-open .layer-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.pyramid-card.is-open .layer-body{display:grid;grid-template-columns:1fr;gap:12px}
 .pyramid-card.is-open li{overflow-wrap:normal;word-break:normal}
-.pyramid-card-actions{display:none;padding:0 14px 14px;background:#0b1b2d}
+.pyramid-card-actions{display:none;padding:4px 14px 14px;background:#0b1b2d}
 .pyramid-card.is-open .pyramid-card-actions{display:flex}
 .pyramid-open-checklist{width:100%;padding:8px 11px;border:1px solid #38bdf8;border-radius:8px;background:#0c2b3f;color:#bae6fd;font:800 9px 'DM Sans',sans-serif;cursor:pointer;text-align:center}
 .pyramid-open-checklist:hover{background:#123c56;color:#fff}
