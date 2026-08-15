@@ -9,6 +9,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Personal learning state (kept only in this workspace)
+LEARNING_PROGRESS.md
+
 # Logs and local environment files
 *.log
 .env
