@@ -1534,7 +1534,7 @@ ${lang==='sql'?`<div class="sql-tables-panel" id="tablespanel-${safeId}">
 }
 
 const CHECKLIST_CATEGORIES=[
-{id:'technical',label:'CORE TECHNICAL SKILLS',subtitle:'SQL, Python, modeling, pipeline construction, quality, orchestration, DevOps and cloud',color:'#22c55e',open:true},
+{id:'technical',label:'CORE TECHNICAL SKILLS',subtitle:'SQL, Python, modeling, pipeline construction, quality, orchestration, DevOps and cloud',color:'#22c55e',open:false},
 {id:'professional',label:'BUSINESS, GOVERNANCE & STRATEGY',subtitle:'Requirements, production operations, governance, architecture and trusted data consumption',color:'#2563eb',open:false},
 {id:'bonus',label:'BONUS — NICE TO KNOW',subtitle:'Engineering mindset, trade-offs and leadership habits',color:'#9ca3af',open:false}
 ];
@@ -1559,7 +1559,7 @@ return `<div class="topic-row"><label class="flex items-center gap-3 py-1.5 px-2
 function renderSections(){
 const container=document.getElementById('sections-container');
 if(container.children.length===0){
-container.innerHTML='<div class="checklist-category-selectors" id="checklist-category-selectors"></div><div class="checklist-category-panels" id="checklist-category-panels"></div>';
+container.innerHTML='<div class="checklist-category-selectors" id="checklist-category-selectors"></div><div class="checklist-category-panels" id="checklist-category-panels" style="display:none"></div>';
 const selectors=document.getElementById('checklist-category-selectors');
 const panels=document.getElementById('checklist-category-panels');
 CHECKLIST_CATEGORIES.forEach(category=>{
