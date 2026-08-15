@@ -148,6 +148,15 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 /* Interactive */
 .interactive-section{background:#0f172a;padding:16px;margin-top:12px;border-radius:8px;max-width:1600px;margin-left:auto;margin-right:auto}
 .progress-fill{transition:width .4s ease}
+#sections-container{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:dense;gap:12px}
+.checklist-section-card{min-width:0;margin:0!important;background:#111827;box-shadow:0 5px 18px rgba(2,6,23,.18);transition:border-color .2s,box-shadow .2s}
+.checklist-section-card:hover{border-color:#475569;box-shadow:0 8px 24px rgba(2,6,23,.28)}
+.checklist-section-card.is-expanded{grid-column:1/-1;box-shadow:0 12px 32px rgba(2,6,23,.32)}
+.checklist-section-card .section-toggle{min-height:82px;display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;gap:10px}
+.checklist-section-card .section-toggle>span{line-height:1.25}
+.checklist-section-card .section-toggle>div{width:100%;justify-content:flex-end}
+@media(max-width:1050px){#sections-container{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){#sections-container{grid-template-columns:1fr}.checklist-section-card .section-toggle{min-height:auto}}
 .section-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
 .section-content.open{max-height:8000px}
 .chevron-icon{transition:transform .3s ease}
@@ -1516,7 +1525,7 @@ const container=document.getElementById('sections-container');
 if(container.children.length===0){
 SECTIONS.forEach(section=>{
 const div=document.createElement('div');
-div.className='rounded-lg border border-slate-700 overflow-hidden';
+div.className='checklist-section-card rounded-lg border border-slate-700 overflow-hidden';
 div.dataset.sectionId=section.id;
 div.id='sec-'+section.id;
 const headerBg=section.priority==='must'?'#16692d':section.priority==='should'?'#194aa8':'#374151';
@@ -1651,13 +1660,19 @@ el.querySelector('.progress-fill').style.width=(sDone/section.topics.length*100)
 function toggleSection(id){
 const content=document.getElementById('content-'+id);
 content.classList.toggle('open');
-content.closest('[data-section-id]').querySelector('.section-toggle').classList.toggle('section-open');
+const card=content.closest('[data-section-id]');
+card.querySelector('.section-toggle').classList.toggle('section-open');
+card.classList.toggle('is-expanded',content.classList.contains('open'));
 }
 
 function scrollToSection(id){
 const mappedId=NAVIGATION_MAP[id]||id;
 const el=document.getElementById('sec-'+mappedId);
-if(el){el.scrollIntoView({behavior:'smooth',block:'start'});toggleSection(mappedId);}
+if(el){
+const content=document.getElementById('content-'+mappedId);
+if(content&&!content.classList.contains('open'))toggleSection(mappedId);
+requestAnimationFrame(()=>el.scrollIntoView({behavior:'smooth',block:'start'}));
+}
 }
 
 /* ---- Local mirror: the real fix for "can't uncheck" ----
