@@ -1,47 +1,49 @@
 # Data Engineering Roadmap 2026–2027
 
-Interactive, browser-based roadmap for learning modern data engineering. The application includes a structured checklist, curated resources, an animated production pipeline, notes, and guided SQL/Python practice.
+An interactive roadmap for understanding the skills, systems, and practices required in modern data engineering.
 
-## Live site
+## Explore the roadmap
 
-[data-engineering-workbook.vercel.app](https://data-engineering-workbook.vercel.app)
+**[Open the live application](https://data-engineering-workbook.vercel.app)**
 
-## Project structure
+## What it includes
+
+- A structured learning path from business requirements and foundations to production architecture.
+- SQL, Python, data modeling, ingestion, storage, transformation, orchestration, governance, and observability topics.
+- An animated end-to-end production pipeline showing how data moves from sources to business consumption.
+- Curated documentation, courses, books, and technical references for every major section.
+- A guided PostgreSQL practice workspace for applying SQL concepts.
+- Personal notes and checklist progress stored privately in each visitor’s browser.
+
+## How progress works
+
+The application does not require an account. Checklist progress and notes remain in the visitor’s browser and are not shared with other users.
+
+## Technology
+
+The roadmap is a self-contained static web application:
+
+- HTML, CSS, and JavaScript
+- Tailwind CSS
+- Lucide icons
+- PGlite for browser-based PostgreSQL practice
+- Vercel for hosting
+
+No application server or build process is required to serve the roadmap.
+
+## Repository structure
 
 ```text
 .
-├── index.html              # Complete static web application
-├── README.md               # Project overview and local setup
-├── .gitignore              # Local and sensitive files excluded from Git
+├── index.html
+├── README.md
+├── .gitignore
 └── docs/
-    └── DEPLOYMENT.md       # Deployment and release instructions
+    └── DEPLOYMENT.md
 ```
 
-The application intentionally remains self-contained in `index.html`. Its styles, data, and runtime logic are inline so the roadmap can be deployed as a static site without a build step.
+Deployment and release procedures are documented in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
-## Run locally
+## Project status
 
-From the project directory:
-
-```bash
-python3 -m http.server 8000
-```
-
-Then open [http://localhost:8000](http://localhost:8000).
-
-Stop the server with `Ctrl + C`.
-
-## Development workflow
-
-- `main` contains the public production version.
-- `develop` is used for local changes and review.
-- Verify changes locally before merging `develop` into `main`.
-- Do not commit `.vercel/`, environment files, editor settings, or generated logs.
-
-## Persistence
-
-Checklist progress and notes are stored in each visitor’s browser. Users do not share progress with one another.
-
-## Deployment
-
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+The public version is maintained on `main`. Changes are reviewed on `develop` before production release.
