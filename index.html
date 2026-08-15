@@ -21,6 +21,17 @@
 *{box-sizing:border-box}
 html{--vh:1vh;color-scheme:dark}
 body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
+.ai-tutor-shell{position:fixed;z-index:9000;top:0;right:0;width:390px;height:100vh;display:flex;flex-direction:column;background:#070d17;border-left:1px solid #29445f;box-shadow:-18px 0 48px rgba(0,0,0,.32);color:#e2e8f0}
+.ai-tutor-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;border-bottom:1px solid #21384d;background:linear-gradient(135deg,#0b1c2c,#07111d)}
+.ai-tutor-brand{display:flex;gap:9px;align-items:center;min-width:0}.ai-tutor-logo{width:31px;height:31px;display:grid;place-items:center;border:1px solid #38bdf8;border-radius:9px;background:#082238;color:#7dd3fc;font-weight:900;box-shadow:0 0 16px rgba(56,189,248,.18)}
+.ai-tutor-brand b{display:block;font-size:12px}.ai-tutor-brand span{display:block;margin-top:2px;font-size:8px;color:#7f98b2}.ai-tutor-status{display:flex;align-items:center;gap:5px;font-size:8px;color:#86efac}.ai-tutor-status i{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e}
+.ai-tutor-context{padding:10px 13px;border-bottom:1px solid #1b3145;background:#091522}.ai-tutor-context small{display:block;font-size:7.5px;color:#64748b;text-transform:uppercase;letter-spacing:.6px}.ai-tutor-context strong{display:block;margin-top:4px;font-size:10.5px;color:#bae6fd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ai-tutor-context span{display:block;margin-top:4px;font-size:8px;color:#8298ab;line-height:1.35}
+.ai-tutor-actions{display:flex;gap:6px;padding:9px 10px;overflow-x:auto;border-bottom:1px solid #172b3e}.ai-tutor-chip{flex:0 0 auto;border:1px solid #24506d;border-radius:999px;background:#0a1f31;color:#b9e9fb;padding:5px 8px;font-size:8px;font-weight:700;cursor:pointer}.ai-tutor-chip:hover{border-color:#38bdf8;background:#0c2b42}
+.ai-tutor-messages{flex:1;overflow-y:auto;padding:13px 11px;display:flex;flex-direction:column;gap:10px}.ai-message{max-width:92%;border:1px solid #20384e;border-radius:10px;padding:9px 10px;font-size:9.5px;line-height:1.48;white-space:pre-wrap}.ai-message.tutor{align-self:flex-start;background:#0c1c2b;color:#d8e7f2;border-top-left-radius:3px}.ai-message.user{align-self:flex-end;background:#12344b;color:#e0f2fe;border-color:#246080;border-top-right-radius:3px}.ai-message .ai-label{display:block;margin-bottom:5px;color:#67e8f9;font-size:7.5px;font-weight:800;text-transform:uppercase;letter-spacing:.45px}.ai-message code{font-family:'SF Mono',Consolas,monospace;color:#bae6fd;background:#06101a;padding:1px 3px;border-radius:3px}
+.ai-tutor-compose{padding:10px;border-top:1px solid #21384d;background:#08131f}.ai-tutor-input-wrap{display:grid;grid-template-columns:1fr 34px;gap:7px;align-items:end;border:1px solid #2a4b64;border-radius:10px;background:#0b1927;padding:7px}.ai-tutor-input{width:100%;min-height:39px;max-height:110px;resize:none;border:0;outline:0;background:transparent;color:#e2e8f0;font:9.5px/1.4 'DM Sans',sans-serif}.ai-tutor-input::placeholder{color:#607589}.ai-tutor-send{width:32px;height:32px;border:1px solid #38bdf8;border-radius:8px;background:#0c4a6e;color:#e0f2fe;font-size:16px;cursor:pointer}.ai-tutor-note{display:flex;justify-content:space-between;gap:8px;margin-top:6px;color:#51677a;font-size:7px}.ai-tutor-toggle{display:none;position:fixed;right:12px;bottom:14px;z-index:9002;border:1px solid #38bdf8;border-radius:999px;background:#082238;color:#e0f2fe;padding:9px 12px;font-size:10px;font-weight:800;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+@media(min-width:1281px){body.ai-tutor-enabled{padding-right:390px}.poster{max-width:1600px}.ai-tutor-shell.is-hidden{transform:translateX(100%)}body.ai-tutor-enabled:has(.ai-tutor-shell.is-hidden){padding-right:0}.ai-tutor-close{display:none}}
+@media(max-width:1280px){.ai-tutor-shell{transform:translateX(100%);transition:transform .22s ease;width:min(390px,94vw)}.ai-tutor-shell.is-open{transform:translateX(0)}.ai-tutor-toggle{display:block}.ai-tutor-close{display:block;border:0;background:transparent;color:#94a3b8;font-size:20px;cursor:pointer}}
+.topic-row.is-ai-active{background:rgba(56,189,248,.08);box-shadow:inset 3px 0 #38bdf8}.fp-node.is-ai-selected .fp-icon{box-shadow:0 0 24px rgba(56,189,248,.65);border-color:#bae6fd}.ai-pulse{animation:ai-context-pulse .45s ease}@keyframes ai-context-pulse{50%{background:#10334a}}
 .poster{max-width:1600px;margin:0 auto;background:#0b1220;padding:14px 18px 20px;color:var(--ink)}.poster-section{background:#1e293b;padding:12px 16px;margin:0 -18px;border-top:1px solid #334155}.poster-section:first-of-type{margin-top:0;padding-top:0;background:transparent;border:none}.poster-section.pipeline{background:#0b1220;border:none;margin:12px -18px 0;padding:12px 18px 0}
 /* Top grid */
 .top-grid{display:grid;grid-template-columns:1fr;gap:12px;align-items:center;margin-bottom:8px}
@@ -281,7 +292,29 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 </style>
   <script src="/_sdk/9432170dbd2ae0df.resizing_sdk.js" type="text/javascript" integrity="sha512-FeT+58sb1f9ejWPWFjCbJvTT+SDwGV+ngrHUnlO7TWEOoqwOLj6p256kO3vOL7DIWl1cIgrobiof8v2bOigwPg=="></script>
  </head>
- <body data-template-id="__page-root" class="w-full min-h-screen" style="background: rgb(11, 18, 32);">
+ <body data-template-id="__page-root" class="w-full min-h-screen ai-tutor-enabled" style="background: rgb(11, 18, 32);">
+  <aside class="ai-tutor-shell" id="ai-tutor" aria-label="AI learning tutor">
+   <div class="ai-tutor-head">
+    <div class="ai-tutor-brand"><div class="ai-tutor-logo">AI</div><div><b>Roadmap Tutor</b><span>Context-aware learning companion</span></div></div>
+    <div class="ai-tutor-status"><i></i><span>Learning mode</span></div>
+    <button class="ai-tutor-close" type="button" onclick="toggleAiTutor(false)" aria-label="Close tutor">×</button>
+   </div>
+   <div class="ai-tutor-context" id="ai-context-card"><small>Current learning context</small><strong id="ai-context-title">Welcome to your roadmap</strong><span id="ai-context-meta">Select a topic or a pipeline component. I will follow your learning context here.</span></div>
+   <div class="ai-tutor-actions">
+    <button class="ai-tutor-chip" type="button" data-ai-action="explain">Explain simply</button>
+    <button class="ai-tutor-chip" type="button" data-ai-action="example">Real example</button>
+    <button class="ai-tutor-chip" type="button" data-ai-action="exercise">Generate exercise</button>
+    <button class="ai-tutor-chip" type="button" data-ai-action="quiz">Quiz me</button>
+   </div>
+   <div class="ai-tutor-messages" id="ai-messages" aria-live="polite">
+    <div class="ai-message tutor"><span class="ai-label">Roadmap Tutor</span>Welcome! Click any roadmap item or pipeline component. I will explain it here without opening another window.</div>
+   </div>
+   <form class="ai-tutor-compose" id="ai-tutor-form">
+    <div class="ai-tutor-input-wrap"><textarea class="ai-tutor-input" id="ai-tutor-input" placeholder="Ask about the selected item…"></textarea><button class="ai-tutor-send" type="submit" aria-label="Send">↑</button></div>
+    <div class="ai-tutor-note"><span>Prototype tutor · local context</span><span>Neon + live AI: next phase</span></div>
+   </form>
+  </aside>
+  <button class="ai-tutor-toggle" type="button" onclick="toggleAiTutor(true)">AI Tutor</button>
   <div class="mobile-gate" id="mobile-gate">
    <div class="mobile-gate-box">
     <i data-lucide="monitor"></i>
@@ -2994,5 +3027,78 @@ renderSections();
 })();
 </script>
   </div>
+ <script>
+/* Phase 1: persistent, context-aware learning companion. This local tutor
+   proves the full interaction model without exposing an API key. The next
+   phase replaces tutorReply() with a protected streaming server endpoint. */
+(function(){
+ const tutor=document.getElementById('ai-tutor');
+ const messages=document.getElementById('ai-messages');
+ const contextTitle=document.getElementById('ai-context-title');
+ const contextMeta=document.getElementById('ai-context-meta');
+ const contextCard=document.getElementById('ai-context-card');
+ const input=document.getElementById('ai-tutor-input');
+ let current={type:'welcome',title:'Welcome to your roadmap',section:'',detail:''};
+
+ const knowledge=[
+  {test:/select|where|group by|having/i,explain:'SELECT chooses the output columns, WHERE filters rows before aggregation, GROUP BY creates groups, and HAVING filters those groups after aggregation.',example:'A finance analyst groups completed orders by customer, calculates SUM(total_amount), then uses HAVING to keep customers above a revenue threshold.',exercise:'Using company.customers and company.orders, return customer name, city, completed order count, and total revenue. Keep only customers whose completed revenue is greater than 100.',quiz:'Which clause filters aggregated groups: WHERE or HAVING? Explain why.'},
+  {test:/join/i,explain:'A JOIN connects rows from related tables through a key. INNER keeps matches; LEFT keeps every row from the left table even when no match exists.',example:'Join company.customers to company.orders using customer_id to connect an order with the customer who placed it.',exercise:'List every customer and their order count, including customers with zero orders. Choose the JOIN that preserves every customer.',quiz:'When would LEFT JOIN return more rows than INNER JOIN?'},
+  {test:/python/i,explain:'Python is the general-purpose layer of the roadmap: ingestion, validation, file processing, APIs, orchestration helpers, and automation.',example:'Read a CSV, normalize column names, validate required fields, and write clean records to Parquet.',exercise:'Create a small list of customer dictionaries, keep active customers, and calculate how many belong to each country.',quiz:'Why might a generator be better than a list for processing a very large file?'},
+  {test:/kafka|stream/i,explain:'Kafka transports ordered event streams through topics split into partitions. Producers publish; consumer groups process events with scalable ownership.',example:'Each property-listing update is published as an event. A consumer validates it and lands an immutable copy in Bronze.',exercise:'Design an event with event_id, entity_id, event_type, occurred_at, and schema_version. Explain how you would make consumption idempotent.',quiz:'What is the difference between a topic, a partition, and a consumer group?'},
+  {test:/bronze|s3|storage/i,explain:'Bronze preserves source data with minimal transformation so the pipeline can be replayed, audited, and debugged.',example:'Raw API JSON is stored by ingestion date and source before any fields are renamed or rejected.',exercise:'Propose a partition path for daily property events and explain which metadata must accompany every landed file.',quiz:'Why should Bronze usually be immutable?'},
+  {test:/spark/i,explain:'Spark distributes transformations across a cluster and is useful when data volume or computation exceeds a single machine.',example:'Spark reads partitioned Parquet from Bronze, removes duplicates, validates types, and writes standardized Silver tables.',exercise:'Describe how you would deduplicate events using entity_id and event timestamp while keeping the newest record.',quiz:'When would pandas or Polars be a better choice than Spark?'},
+  {test:/dbt|transformation/i,explain:'dbt turns SQL transformations into versioned, tested, documented models with explicit dependencies.',example:'A staging model cleans order fields; an intermediate model joins customers; a mart model publishes monthly revenue.',exercise:'Design three dbt model layers for a customer-revenue mart and name one test for each layer.',quiz:'What is the purpose of ref() in dbt?'},
+  {test:/quality|great expectations|soda/i,explain:'Data quality makes expectations executable: schema, completeness, uniqueness, validity, freshness, and business rules.',example:'Reject an order when order_id is missing, total_amount is negative, or its customer key is unknown.',exercise:'Write five quality checks for an orders table and classify each as critical or warning.',quiz:'What is the difference between a validation failure and a pipeline failure?'},
+  {test:/airflow|orchestration/i,explain:'Orchestration coordinates tasks, dependencies, schedules, retries, parameters, and operational visibility.',example:'An Airflow DAG waits for a source file, validates it, loads Bronze, transforms Silver, tests Gold, then notifies owners.',exercise:'Sketch a DAG with one parallel branch and a quality gate before publication.',quiz:'Why should a task be idempotent before automatic retries are enabled?'},
+  {test:/governance|catalog|lineage/i,explain:'Governance establishes ownership, definitions, access, lineage, quality expectations, and responsible use of data.',example:'A catalog entry identifies the owner of customer_email, its sensitivity, retention rule, and downstream dashboards.',exercise:'Create a minimal data contract for a customer table including ownership and privacy classification.',quiz:'How are a data catalog and data lineage different?'},
+  {test:/pipeline/i,explain:'A data pipeline moves information from sources to trusted products through ingestion, storage, processing, quality, modeling, and delivery.',example:'CRM and API events land in Bronze, become typed Silver records, feed dbt Gold models, and serve Power BI.',exercise:'Choose one failure point in this pipeline and describe detection, containment, retry, and recovery.',quiz:'At which stage should malformed source records be quarantined, and why?'}
+ ];
+
+ function addMessage(role,text){
+  const el=document.createElement('div');
+  el.className='ai-message '+role;
+  const label=document.createElement('span');label.className='ai-label';label.textContent=role==='user'?'You':'Roadmap Tutor';
+  el.appendChild(label);el.appendChild(document.createTextNode(text));messages.appendChild(el);messages.scrollTop=messages.scrollHeight;
+ }
+ function lessonFor(title){return knowledge.find(k=>k.test.test(title))||{explain:'This item belongs to your data engineering path. Start by defining its purpose, inputs, outputs, failure modes, and place in an end-to-end pipeline.',example:'Connect the concept to Horizon Estates: identify who produces the data, how it moves, and who consumes the result.',exercise:'Explain this item in your own words, then give one real use case and one possible failure.',quiz:'What problem does this concept solve, and what would happen if the pipeline omitted it?'};}
+ function updateContext(next,announce){
+  current=next;contextTitle.textContent=next.title;contextMeta.textContent=next.detail||('Selected '+next.type+(next.section?' in '+next.section:''));
+  contextCard.classList.remove('ai-pulse');void contextCard.offsetWidth;contextCard.classList.add('ai-pulse');
+  if(announce){const lesson=lessonFor(next.title);addMessage('tutor','You selected “'+next.title+'”. '+lesson.explain+'\n\nChoose an action above, ask a question, or start the related lab.');}
+  if(window.innerWidth<=1280)window.toggleAiTutor(true);
+ }
+ function tutorReply(action,question){
+  const lesson=lessonFor(current.title);
+  if(action==='explain')return lesson.explain;
+  if(action==='example')return lesson.example;
+  if(action==='exercise')return 'Practice challenge\n\n'+lesson.exercise+'\n\nTry it first. Ask for an “indice” if you get stuck.';
+  if(action==='quiz')return 'Quick check\n\n'+lesson.quiz;
+  const q=(question||'').toLowerCase();
+  if(/indice|hint/.test(q))return 'First hint: identify the expected output, then list the source tables or files and the filters required. Build the solution one transformation at a time.';
+  if(/solution|réponse|answer/.test(q))return 'Before revealing a full solution, show me your current attempt. I will identify the next correction while keeping the learning step active.';
+  if(/expli|what|quoi|comment|how|why|pourquoi/.test(q))return lesson.explain+'\n\nReal-world connection: '+lesson.example;
+  return 'I am following “'+current.title+'”. '+lesson.explain+' Tell me whether you want a simpler explanation, a real example, an exercise, or a quiz.';
+ }
+ function topicFromRow(row){
+  const cb=row.querySelector('input[data-topic]');const label=row.querySelector('span.text-slate-300');
+  if(!cb||!label)return null;const parts=cb.dataset.topic.split('::');
+  return {type:'roadmap topic',title:label.textContent.trim(),section:(parts[0]||'').replace(/_/g,' '),detail:'Roadmap topic · progress and learning history stay attached to this item'};
+ }
+ document.addEventListener('click',function(e){
+  const row=e.target.closest('.topic-row');
+  if(row){document.querySelectorAll('.topic-row.is-ai-active').forEach(x=>x.classList.remove('is-ai-active'));row.classList.add('is-ai-active');const topic=topicFromRow(row);if(topic)updateContext(topic,true);return;}
+  const fp=e.target.closest('.fp-node');
+  if(fp){document.querySelectorAll('.fp-node.is-ai-selected').forEach(x=>x.classList.remove('is-ai-selected'));fp.classList.add('is-ai-selected');const title=(fp.querySelector('strong')||{}).textContent||'Pipeline component';const detail=(fp.querySelector('small')||{}).textContent||'Horizon Estates live data journey';updateContext({type:'pipeline node',title:title.trim(),section:'Horizon Estates pipeline',detail:detail.trim()},true);return;}
+  const pipe=e.target.closest('.pipe-node[data-node]');
+  if(pipe){const title=(pipe.querySelector('b')||{}).textContent||pipe.dataset.node;const small=(pipe.querySelector('small')||{}).textContent||'Pipeline component';updateContext({type:'pipeline node',title:title.trim(),section:'Horizon Estates pipeline',detail:small.trim()},true);return;}
+  const run=e.target.closest('.run-btn[id^="runbtn-"]');
+  if(run){addMessage('tutor','Running your '+(current.title||'practice')+' attempt. I will inspect the visible result when execution finishes.');setTimeout(function(){const id=run.id.replace('runbtn-','');const out=document.getElementById('output-'+id);if(out){const result=(out.innerText||'').trim().slice(0,700);addMessage('tutor',result?'Execution result received:\n'+result+'\n\nExplain what you expected and I will help compare it.':'The run finished without a visible result. Check the editor and try again.');}},1400);}
+ });
+ document.querySelectorAll('[data-ai-action]').forEach(btn=>btn.addEventListener('click',function(){const action=btn.dataset.aiAction;addMessage('user',btn.textContent.trim());setTimeout(()=>addMessage('tutor',tutorReply(action,'')),180);}));
+ document.getElementById('ai-tutor-form').addEventListener('submit',function(e){e.preventDefault();const q=input.value.trim();if(!q)return;addMessage('user',q);input.value='';setTimeout(()=>addMessage('tutor',tutorReply('ask',q)),220);});
+ window.toggleAiTutor=function(open){if(window.innerWidth>1280){tutor.classList.toggle('is-hidden',open===false);if(open===true)tutor.classList.remove('is-hidden');}else{tutor.classList.toggle('is-open',open!==false);}};
+ window.aiTutorSelectSection=function(sectionId){const section=(window.SECTIONS||[]).find(s=>s.id===sectionId);if(section)updateContext({type:'roadmap section',title:section.name,section:section.id,detail:section.topics.length+' learning objectives in this section'},true);};
+})();
+ </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a18d0b2d626ea4d0',t:'MTc4MzY2MDAzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body></html>
