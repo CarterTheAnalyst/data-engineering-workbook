@@ -3,6 +3,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Engineering Roadmap 2026-2027</title>
+  <script>
+  (function(){
+  var theme='dark';
+  try{theme=localStorage.getItem('data-roadmap-theme')||'dark';}catch(e){}
+  document.documentElement.dataset.theme=theme;
+  window.setRoadmapTheme=function(nextTheme){
+  document.documentElement.dataset.theme=nextTheme;
+  try{localStorage.setItem('data-roadmap-theme',nextTheme);}catch(e){}
+  };
+  window.toggleRoadmapTheme=function(){
+  window.setRoadmapTheme(document.documentElement.dataset.theme==='light'?'dark':'light');
+  };
+  })();
+  </script>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
@@ -21,6 +35,8 @@
 *{box-sizing:border-box}
 html{--vh:1vh;color-scheme:dark}
 body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
+.theme-toggle{position:fixed;top:14px;right:14px;z-index:1000;height:38px;padding:0 12px;border:1px solid #475569;border-radius:20px;background:rgba(15,23,42,.92);color:#f8fafc;display:flex;align-items:center;gap:7px;font:700 10px 'DM Sans',sans-serif;cursor:pointer;box-shadow:0 8px 24px rgba(2,6,23,.3);backdrop-filter:blur(10px)}
+.theme-toggle:hover{border-color:#7dd3fc;background:#16233a}.theme-toggle svg{width:16px;height:16px}.theme-dark-choice,.theme-light-choice{display:none;align-items:center;gap:6px}html[data-theme="dark"] .theme-light-choice,html[data-theme="light"] .theme-dark-choice{display:flex}
 .poster{max-width:1600px;margin:0 auto;background:#0b1220;padding:14px 18px 20px;color:var(--ink)}.poster-section{background:#1e293b;padding:12px 16px;margin:0 -18px;border-top:1px solid #334155}.poster-section:first-of-type{margin-top:0;padding-top:0;background:transparent;border:none}.poster-section.pipeline{background:#0b1220;border:none;margin:12px -18px 0;padding:12px 18px 0}
 /* Top grid */
 .top-grid{display:grid;grid-template-columns:1fr;gap:12px;align-items:center;margin-bottom:8px}
@@ -305,10 +321,44 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .sql-tables-panel.collapsed .stp-body{display:none}
 .mobile-gate{display:none!important}
 
+/* User-selectable light theme. Technical diagrams and code editors intentionally remain dark. */
+html[data-theme="light"]{color-scheme:light;--ink:#0f172a;--line:#cbd5e1;--soft:#f8fafc}
+html[data-theme="light"] body{background:#e7edf4;color:#0f172a}
+html[data-theme="light"] .poster{background:#f8fafc;color:#0f172a}
+html[data-theme="light"] .poster-section{background:#eef2f7;border-color:#cbd5e1}
+html[data-theme="light"] .poster-section:first-of-type{background:transparent}
+html[data-theme="light"] .poster-section.pipeline{background:#f8fafc}
+html[data-theme="light"] .top-grid h1{color:#0f172a!important}
+html[data-theme="light"] .focus-box,html[data-theme="light"] .found-card,html[data-theme="light"] .layer-card,html[data-theme="light"] .eng-card,html[data-theme="light"] .path-card{background:#fff;border-color:#cbd5e1;color:#0f172a}
+html[data-theme="light"] .focus-box .target-main,html[data-theme="light"] .found-body,html[data-theme="light"] .layer-body,html[data-theme="light"] .eng-body,html[data-theme="light"] .path-card b{color:#1e293b}
+html[data-theme="light"] .section-num{background:#dbe4ee;color:#0f172a}
+html[data-theme="light"] .interactive-section{background:#e7edf4;color:#0f172a}
+html[data-theme="light"] .interactive-section>div:first-child h2{color:#0f172a!important}
+html[data-theme="light"] .checklist-category-panels,html[data-theme="light"] .checklist-category-panel{background:#f1f5f9;border-color:#cbd5e1}
+html[data-theme="light"] .checklist-section-card{background:#fff;border-color:#cbd5e1;box-shadow:0 6px 18px rgba(15,23,42,.09)}
+html[data-theme="light"] .checklist-section-card .section-toggle>span{color:#0f172a!important}
+html[data-theme="light"] .section-extra{background:#e8eef5}
+html[data-theme="light"] .section-block,html[data-theme="light"] .section-panel,html[data-theme="light"] .topics-panel,html[data-theme="light"] .resource-folder{background:#fff;border-color:#cbd5e1}
+html[data-theme="light"] .section-block-toggle,html[data-theme="light"] .section-block-head{background:#e2e8f0;color:#0f172a}
+html[data-theme="light"] .section-block-toggle:hover{background:#d5dee9}
+html[data-theme="light"] .topic-row label{background:#f8fafc}
+html[data-theme="light"] .topic-row label:hover{background:#eef2f7;border-color:#cbd5e1}
+html[data-theme="light"] .topic-row .text-slate-300,html[data-theme="light"] .resource-folder-head{color:#1e293b!important}
+html[data-theme="light"] .resource-item{background:#f8fafc;border-color:#cbd5e1}
+html[data-theme="light"] .resource-item.curated{background:#f5f3ff;border-color:#a855f7}
+html[data-theme="light"] .link-input,html[data-theme="light"] .lang-select{background:#fff;border-color:#94a3b8;color:#0f172a}
+html[data-theme="light"] .practice-about,html[data-theme="light"] .practice-data-info,html[data-theme="light"] .exercise-card{background:#f8fafc;color:#334155;border-color:#cbd5e1}
+html[data-theme="light"] .exercise-card-head,html[data-theme="light"] .exercise-instr{color:#0f172a}
+html[data-theme="light"] .pipeline-lab,html[data-theme="light"] .free-pipeline,html[data-theme="light"] .code-editor-shell,html[data-theme="light"] .code-output,html[data-theme="light"] .sql-tables-panel{color-scheme:dark}
+
 </style>
   <script src="/_sdk/9432170dbd2ae0df.resizing_sdk.js" type="text/javascript" integrity="sha512-FeT+58sb1f9ejWPWFjCbJvTT+SDwGV+ngrHUnlO7TWEOoqwOLj6p256kO3vOL7DIWl1cIgrobiof8v2bOigwPg=="></script>
  </head>
- <body data-template-id="__page-root" class="w-full min-h-screen" style="background: rgb(11, 18, 32);">
+ <body data-template-id="__page-root" class="w-full min-h-screen">
+  <button type="button" class="theme-toggle" id="theme-toggle" onclick="toggleRoadmapTheme()" aria-label="Switch color theme" title="Switch color theme">
+   <span class="theme-light-choice"><i data-lucide="sun"></i> Light</span>
+   <span class="theme-dark-choice"><i data-lucide="moon"></i> Dark</span>
+  </button>
   <div class="mobile-gate" id="mobile-gate">
    <div class="mobile-gate-box">
     <i data-lucide="monitor"></i>
