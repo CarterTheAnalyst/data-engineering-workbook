@@ -1391,23 +1391,23 @@ function isFoundationSection(sectionId){return sectionId==='sql_foundation';}
 /* Curated, author-provided starting points per section. Shown distinct from
    user-added resources ("Recommended Recommended" vs "My Resources"). */
 const CURATED_RESOURCES={
- business_requirements:[{title:'Stakeholder analysis basics',type:'article',url:'https://www.atlassian.com/team-playbook/plays/stakeholder-analysis'}],
- sql_foundation:[{title:'PostgreSQL Official Documentation',type:'documentation',url:'https://www.postgresql.org/docs/current/'},{title:'Mode SQL Tutorial',type:'course',url:'https://mode.com/sql-tutorial/'}],
- python_foundation:[{title:'Python Official Docs',type:'documentation',url:'https://docs.python.org/3/'},{title:'pandas Documentation',type:'documentation',url:'https://pandas.pydata.org/docs/'},{title:'JupyterLab Documentation',type:'documentation',url:'https://jupyterlab.readthedocs.io/'},{title:'Kaggle Learn Python',type:'course',url:'https://www.kaggle.com/learn/python'},{title:'Real Python Tutorials',type:'article',url:'https://realpython.com/'}],
- data_modeling_foundation:[{title:'Kimball dimensional modeling techniques',type:'article',url:'https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/'}],
- sources:[{title:'REST API design basics',type:'article',url:'https://restfulapi.net/'}],
- ingestion:[{title:'Airbyte Documentation',type:'documentation',url:'https://docs.airbyte.com/'}],
- storage:[{title:'AWS S3 Documentation',type:'documentation',url:'https://docs.aws.amazon.com/s3/'},{title:'Delta Lake Documentation',type:'documentation',url:'https://docs.delta.io/'}],
- transformation:[{title:'dbt Documentation',type:'documentation',url:'https://docs.getdbt.com/'},{title:'Apache Spark Documentation',type:'documentation',url:'https://spark.apache.org/docs/latest/'}],
- data_quality:[{title:'Great Expectations Documentation',type:'documentation',url:'https://docs.greatexpectations.io/'}],
- orchestration:[{title:'Apache Airflow Documentation',type:'documentation',url:'https://airflow.apache.org/docs/'}],
- devops_git:[{title:'Pro Git (free book)',type:'book',url:'https://git-scm.com/book/en/v2'},{title:'Docker Documentation',type:'documentation',url:'https://docs.docker.com/'}],
- cloud:[{title:'AWS Well-Architected Framework',type:'documentation',url:'https://aws.amazon.com/architecture/well-architected/'}],
- governance:[{title:'Data governance fundamentals',type:'article',url:'https://datagovernance.com/'}],
- observability:[{title:'Grafana Documentation',type:'documentation',url:'https://grafana.com/docs/'}],
- architecture:[{title:'Designing Data-Intensive Applications',type:'book',url:'https://dataintensive.net/'}],
- consumption:[{title:'Power BI Documentation',type:'documentation',url:'https://learn.microsoft.com/power-bi/'}],
- engineering_mindset:[{title:'The Pragmatic Programmer',type:'book',url:'https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/'}]
+ business_requirements:[{title:'Atlassian Business Requirements Guide',type:'article',url:'https://www.atlassian.com/software/confluence/resources/guides/how-to/business-requirements'},{title:'IIBA: Business Requirements at the Core',type:'article',url:'https://www.iiba.org/business-analysis-blogs/business-requirements-at-the-core-where-analysis-begins/'}],
+ sql_foundation:[{title:'PostgreSQL Official Tutorial',type:'documentation',url:'https://www.postgresql.org/docs/current/tutorial.html'},{title:'Neon PostgreSQL Tutorial',type:'course',url:'https://neon.com/postgresql/tutorial'}],
+ python_foundation:[{title:'The Official Python Tutorial',type:'documentation',url:'https://docs.python.org/3/tutorial/index.html'},{title:'pandas Getting Started',type:'documentation',url:'https://pandas.pydata.org/docs/getting_started/index.html'}],
+ data_modeling_foundation:[{title:'Kimball Dimensional Modeling Techniques',type:'article',url:'https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/'},{title:'Microsoft: Dimensional Modeling in a Warehouse',type:'documentation',url:'https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-overview'}],
+ sources:[{title:'OpenAPI Learning Documentation',type:'documentation',url:'https://learn.openapis.org/'},{title:'MDN HTTP Overview',type:'documentation',url:'https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview'}],
+ ingestion:[{title:'Airbyte Documentation',type:'documentation',url:'https://docs.airbyte.com/'},{title:'Apache Kafka Documentation',type:'documentation',url:'https://kafka.apache.org/documentation/'}],
+ storage:[{title:'Amazon S3 Getting Started',type:'documentation',url:'https://docs.aws.amazon.com/AmazonS3/latest/userguide/GetStartedWithS3.html'},{title:'Delta Lake Quick Start',type:'documentation',url:'https://docs.delta.io/latest/quick-start.html'}],
+ transformation:[{title:'dbt Quickstarts',type:'documentation',url:'https://docs.getdbt.com/docs/get-started-dbt'},{title:'Apache Spark Quick Start',type:'documentation',url:'https://spark.apache.org/docs/latest/quick-start.html'}],
+ data_quality:[{title:'Great Expectations Core Introduction',type:'documentation',url:'https://docs.greatexpectations.io/docs/core/introduction/'},{title:'Soda Documentation',type:'documentation',url:'https://docs.soda.io/'}],
+ orchestration:[{title:'Apache Airflow Documentation',type:'documentation',url:'https://airflow.apache.org/docs/'},{title:'Prefect Getting Started',type:'documentation',url:'https://docs.prefect.io/v3/get-started'}],
+ devops_git:[{title:'Pro Git (Free Book)',type:'book',url:'https://git-scm.com/book/en/v2'},{title:'Docker Get Started',type:'documentation',url:'https://docs.docker.com/get-started/'}],
+ cloud:[{title:'AWS Modern Data Architecture',type:'documentation',url:'https://docs.aws.amazon.com/prescriptive-guidance/latest/strategy-aws-data/aws-architecture.html'},{title:'AWS Data Analytics Lens',type:'documentation',url:'https://docs.aws.amazon.com/wellarchitected/latest/analytics-lens/modern-data-architecture.html'}],
+ governance:[{title:'OpenMetadata Documentation',type:'documentation',url:'https://docs.open-metadata.org/'},{title:'DataHub: Data Catalog and Governance',type:'documentation',url:'https://docs.datahub.com/docs/features'}],
+ observability:[{title:'OpenTelemetry: What Is OpenTelemetry?',type:'documentation',url:'https://opentelemetry.io/docs/what-is-opentelemetry/'},{title:'Grafana Documentation',type:'documentation',url:'https://grafana.com/docs/'}],
+ architecture:[{title:'Designing Data-Intensive Applications',type:'book',url:'https://dataintensive.net/'},{title:'Red Hat Data Engineering Reference Architectures',type:'article',url:'https://www.redhat.com/en/blog/data-engineering-portfolio-architecture'}],
+ consumption:[{title:'Microsoft Power BI Documentation',type:'documentation',url:'https://learn.microsoft.com/en-us/power-bi/'},{title:'Apache Superset User Guide',type:'documentation',url:'https://superset.apache.org/user-docs/intro/'}],
+ engineering_mindset:[{title:'The Pragmatic Programmer',type:'book',url:'https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/'},{title:'Google Site Reliability Engineering Books',type:'book',url:'https://sre.google/books/'}]
 };
 
 /* Designed together with SAMPLE_SCHEMA_SQL - every exercise is solvable
