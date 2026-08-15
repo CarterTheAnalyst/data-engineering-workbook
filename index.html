@@ -154,6 +154,19 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 @media(min-width:1024px){.eng-body ul{padding-left:12px}}
 .eng-body li{margin:0.5px 0}
 @media(min-width:1024px){.eng-body li{margin:1.5px 0}}
+/* Compact, collapsible cards for the pyramid roadmap levels */
+.pyramid-card{border-radius:14px;background:linear-gradient(145deg,#07182b,#0b243b);border-color:#334155;box-shadow:0 10px 24px rgba(2,6,23,.25);transition:transform .2s,border-color .2s,box-shadow .2s}
+.pyramid-card:hover{transform:translateY(-3px);border-color:#64748b;box-shadow:0 15px 32px rgba(2,6,23,.34)}
+.pyramid-card .found-head,.pyramid-card .layer-head,.pyramid-card .eng-head{position:relative;min-height:58px;padding:12px 42px 12px 15px;text-align:left;justify-content:flex-start;font-size:11px;letter-spacing:.1px}
+.pyramid-chevron{position:absolute;right:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);transition:transform .22s}
+.pyramid-card.is-open .pyramid-chevron{transform:translateY(-50%) rotate(180deg)}
+.pyramid-card .found-body,.pyramid-card .layer-body,.pyramid-card .eng-body{display:none;color:#dbe5f0;padding:14px 16px;font-size:9.5px;line-height:1.45;background:#0b1b2d}
+.pyramid-card.is-open .found-body,.pyramid-card.is-open .eng-body{display:block}
+.pyramid-card.is-open .layer-body{display:grid}
+.pyramid-card-actions{display:none;padding:0 14px 14px;background:#0b1b2d}
+.pyramid-card.is-open .pyramid-card-actions{display:flex}
+.pyramid-open-checklist{width:100%;padding:8px 11px;border:1px solid #38bdf8;border-radius:8px;background:#0c2b3f;color:#bae6fd;font:800 9px 'DM Sans',sans-serif;cursor:pointer;text-align:center}
+.pyramid-open-checklist:hover{background:#123c56;color:#fff}
 /* Path */
 .path-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));align-items:stretch;gap:7px;padding-bottom:8px}
 .path-card{border:1.5px solid var(--line);border-radius:6px;padding:7px 8px;font-size:8px;position:relative;min-width:0;max-width:none;background:#1e293b}
@@ -329,8 +342,15 @@ html[data-theme="light"] .poster-section{background:#eef2f7;border-color:#cbd5e1
 html[data-theme="light"] .poster-section:first-of-type{background:transparent}
 html[data-theme="light"] .poster-section.pipeline{background:#f8fafc}
 html[data-theme="light"] .top-grid h1{color:#0f172a!important}
+html[data-theme="light"] .side-label,html[data-theme="light"] .flow-card .name,html[data-theme="light"] .flow-arrow{color:#0f172a!important}
+html[data-theme="light"] .side-label p{color:#475569!important}
+html[data-theme="light"] .flow-card{background:#fff;border-color:#94a3b8;color:#0f172a}
+html[data-theme="light"] .flow-card .ico{color:#0f4c81}
 html[data-theme="light"] .focus-box,html[data-theme="light"] .found-card,html[data-theme="light"] .layer-card,html[data-theme="light"] .eng-card,html[data-theme="light"] .path-card{background:#fff;border-color:#cbd5e1;color:#0f172a}
 html[data-theme="light"] .focus-box .target-main,html[data-theme="light"] .found-body,html[data-theme="light"] .layer-body,html[data-theme="light"] .eng-body,html[data-theme="light"] .path-card b{color:#1e293b}
+html[data-theme="light"] .pyramid-card{background:linear-gradient(145deg,#07182b,#0b243b);border-color:#334155;color:#f8fafc}
+html[data-theme="light"] .pyramid-card .found-body,html[data-theme="light"] .pyramid-card .layer-body,html[data-theme="light"] .pyramid-card .eng-body{background:#0b1b2d;color:#dbe5f0}
+html[data-theme="light"] .pyramid-card .pyramid-card-actions{background:#0b1b2d}
 html[data-theme="light"] .section-num{background:#dbe4ee;color:#0f172a}
 html[data-theme="light"] .interactive-section{background:#e7edf4;color:#0f172a}
 html[data-theme="light"] .interactive-section>div:first-child h2{color:#0f172a!important}
@@ -2921,6 +2941,45 @@ document.getElementById('pipe-run').addEventListener('click',()=>runCompanyPipel
 requestAnimationFrame(drawPipelineConnections);window.addEventListener('load',drawPipelineConnections,{once:true});let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(drawPipelineConnections,120);});
 }
 
+function initPyramidCards(){
+document.querySelectorAll('.found-card,.layer-card,.eng-card').forEach(card=>{
+if(card.dataset.pyramidReady)return;
+card.dataset.pyramidReady='true';
+card.classList.add('pyramid-card');
+const originalAction=card.getAttribute('onclick')||'';
+const targetMatch=originalAction.match(/scrollToSection\('([^']+)'\)/);
+const targetId=targetMatch?targetMatch[1]:'';
+card.removeAttribute('onclick');
+card.style.cursor='default';
+const head=card.querySelector('.found-head,.layer-head,.eng-head');
+if(!head)return;
+head.setAttribute('role','button');
+head.setAttribute('tabindex','0');
+head.setAttribute('aria-expanded','false');
+head.insertAdjacentHTML('beforeend','<i data-lucide="chevron-down" class="pyramid-chevron"></i>');
+const toggle=()=>{
+const open=card.classList.toggle('is-open');
+head.setAttribute('aria-expanded',String(open));
+};
+head.addEventListener('click',toggle);
+head.addEventListener('keydown',event=>{
+if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle();}
+});
+if(targetId){
+const actions=document.createElement('div');
+actions.className='pyramid-card-actions';
+const button=document.createElement('button');
+button.type='button';
+button.className='pyramid-open-checklist';
+button.textContent='Open checklist →';
+button.addEventListener('click',()=>scrollToSection(targetId));
+actions.appendChild(button);
+card.appendChild(actions);
+}
+});
+try{if(typeof lucide!=='undefined')lucide.createIcons();}catch(e){}
+}
+
 const handler={
 onDataChanged(data){
 records=applyMirror(data);
@@ -3044,6 +3103,7 @@ function makeLocalSdk(){
 
 let activeSdk=makeLocalSdk();
 initCompanyPipeline();
+initPyramidCards();
 
 window.addEventListener('beforeunload',()=>{
 /* Best-effort: flush every pending debounced save immediately, so closing
