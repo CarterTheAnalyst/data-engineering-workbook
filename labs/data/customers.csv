@@ -1,0 +1,9 @@
+customer_id,name,email,country,signup_date,segment
+1,Ana Torres,ana.torres@example.com,Chile,2025-01-10,enterprise
+2,Lucas Martin,lucas.martin@example.com,France,2025-02-03,small_business
+3,Sofia Ramirez,sofia.ramirez@example.com,Mexico,2025-02-18,consumer
+4,Emma Wilson,emma.wilson@example.com,Canada,2025-03-05,enterprise
+5,Diego Silva,diego.silva@example.com,Brazil,2025-03-22,small_business
+6,Nora Dupont,nora.dupont@example.com,France,2025-04-02,consumer
+7,Marco Rossi,marco.rossi@example.com,Italy,2025-04-16,enterprise
+8,Valentina Cruz,valentina.cruz@example.com,Chile,2025-05-01,consumer

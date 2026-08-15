@@ -1,0 +1,7 @@
+product_id,sku,product_name,category,unit_price
+101,DB-START,Database Starter,Data Platform,79.00
+102,PIPE-PRO,Pipeline Pro,Data Platform,149.00
+103,OBS-KIT,Observability Kit,Operations,99.00
+104,BI-DASH,BI Dashboard Pack,Analytics,59.00
+105,CLOUD-LAB,Cloud Lab Credits,Cloud,129.00
+106,GOV-BASE,Governance Basics,Governance,89.00

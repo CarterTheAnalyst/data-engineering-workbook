@@ -1,0 +1,13 @@
+order_id,customer_id,order_date,status,source
+1001,1,2025-05-02,completed,web
+1002,2,2025-05-03,completed,partner
+1003,3,2025-05-05,pending,web
+1004,1,2025-05-08,completed,sales
+1005,4,2025-05-11,cancelled,web
+1006,5,2025-05-14,completed,partner
+1007,6,2025-05-18,completed,web
+1008,7,2025-05-20,pending,sales
+1009,8,2025-05-24,completed,web
+1010,2,2025-06-01,completed,partner
+1011,4,2025-06-03,completed,sales
+1012,5,2025-06-07,cancelled,web

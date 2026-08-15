@@ -11,6 +11,11 @@ Thumbs.db
 
 # Personal learning state (kept only in this workspace)
 LEARNING_PROGRESS.md
+labs/database/*.duckdb
+labs/data/*.parquet
+labs/.env
+__pycache__/
+*.py[cod]
 
 # Logs and local environment files
 *.log

@@ -13,6 +13,7 @@ An interactive roadmap for understanding the skills, systems, and practices requ
 - An animated end-to-end production pipeline showing how data moves from sources to business consumption.
 - Curated documentation, courses, books, and technical references for every major section.
 - A guided PostgreSQL practice workspace for applying SQL concepts.
+- A local Jupyter laboratory with SQLite, CSV/JSON sources, optional DuckDB, and optional Neon/PostgreSQL connectivity.
 - Personal notes and checklist progress stored privately in each visitor’s browser.
 
 ## How progress works
@@ -35,14 +36,25 @@ No application server or build process is required to serve the roadmap.
 
 ```text
 .
+├── AGENTS.md
+├── CLAUDE.md
 ├── index.html
 ├── README.md
 ├── .gitignore
-└── docs/
-    └── DEPLOYMENT.md
+├── docs/
+│   └── DEPLOYMENT.md
+└── labs/
+    ├── connections.py
+    ├── setup_lab.py
+    ├── requirements.txt
+    ├── data/
+    ├── database/
+    ├── python/
+    └── sql/
 ```
 
 Deployment and release procedures are documented in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+Local practice instructions are documented in [labs/README.md](labs/README.md).
 
 ## Project status
 
