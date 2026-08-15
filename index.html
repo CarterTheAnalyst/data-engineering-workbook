@@ -155,18 +155,24 @@ body{font-family:'DM Sans',sans-serif;margin:0;background:#0b1220}
 .eng-body li{margin:0.5px 0}
 @media(min-width:1024px){.eng-body li{margin:1.5px 0}}
 /* Compact, collapsible cards for the pyramid roadmap levels */
-.pyramid-card{min-height:0!important;border-radius:14px;background:linear-gradient(145deg,#07182b,#0b243b);border-color:#334155;box-shadow:0 10px 24px rgba(2,6,23,.25);transition:transform .2s,border-color .2s,box-shadow .2s}
+.found-row,.layer-row,.eng-row{display:grid;grid-template-columns:1fr;gap:16px;align-items:stretch}
+@media(min-width:700px){.found-row,.layer-row,.eng-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1100px){.found-row,.layer-row,.eng-row{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pyramid-card{min-height:0!important;width:auto!important;border-radius:16px;background:#0b1b2d;border-color:#334155;box-shadow:0 10px 28px rgba(2,6,23,.22);transition:transform .2s,border-color .2s,box-shadow .2s}
 .pyramid-card:hover{transform:translateY(-3px);border-color:#64748b;box-shadow:0 15px 32px rgba(2,6,23,.34)}
 .pyramid-card .found-head,.pyramid-card .layer-head,.pyramid-card .eng-head{position:relative;min-height:58px;padding:12px 42px 12px 15px;text-align:left;justify-content:flex-start;font-size:11px;letter-spacing:.1px}
 .pyramid-chevron{position:absolute;right:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);transition:transform .22s}
 .pyramid-card.is-open .pyramid-chevron{transform:translateY(-50%) rotate(180deg)}
-.pyramid-card-cover{min-height:145px;padding:20px 18px 22px;background:radial-gradient(circle at 18% 20%,rgba(56,189,248,.11),transparent 38%),#0b1b2d;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:16px}
-.pyramid-card-logo{width:54px;height:54px;border:1px solid #38bdf8;border-radius:15px;background:#0b2940;color:#7dd3fc;display:grid;place-items:center;box-shadow:0 0 22px rgba(56,189,248,.16)}
-.pyramid-card-logo svg{width:29px;height:29px;stroke-width:1.7}
-.pyramid-card-disclaimer{max-width:34ch;color:#9fb0c4;font-size:9.5px;line-height:1.45;font-weight:600;overflow-wrap:normal;word-break:normal}
+.pyramid-card-cover{min-height:160px;padding:22px;background:#0b1b2d;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:20px;cursor:pointer}
+.pyramid-card-logo{width:58px;height:58px;border:1px solid rgba(148,163,184,.28);border-radius:16px;background:#10243a;color:#7dd3fc;display:grid;place-items:center}
+.pyramid-card-logo svg,.pyramid-card-logo img{width:31px;height:31px;object-fit:contain}
+.pyramid-card-logo img{filter:invert(1);opacity:.94}
+.pyramid-card-logo svg{stroke-width:1.65}
+.pyramid-card-copy{display:flex;flex-direction:column;gap:5px}
+.pyramid-card-brand{color:#f8fafc;font-size:9px;font-weight:800;letter-spacing:.45px;text-transform:uppercase}
+.pyramid-card-disclaimer{max-width:42ch;color:#9fb0c4;font-size:10px;line-height:1.5;font-weight:500;overflow-wrap:normal;word-break:normal}
 .pyramid-card.is-open .pyramid-card-cover{display:none}
-.found-card.pyramid-card.is-open{grid-column:1/-1}
-.layer-card.pyramid-card.is-open,.eng-card.pyramid-card.is-open{flex:1 1 100%}
+.found-card.pyramid-card.is-open,.layer-card.pyramid-card.is-open,.eng-card.pyramid-card.is-open{grid-column:1/-1}
 .pyramid-card .found-body,.pyramid-card .layer-body,.pyramid-card .eng-body{display:none;color:#dbe5f0;padding:14px 16px;font-size:9.5px;line-height:1.45;background:#0b1b2d}
 .pyramid-card.is-open .found-body,.pyramid-card.is-open .eng-body{display:block}
 .pyramid-card.is-open .layer-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
@@ -2951,21 +2957,21 @@ requestAnimationFrame(drawPipelineConnections);window.addEventListener('load',dr
 
 function initPyramidCards(){
 const cardInfo={
-sql_foundation:{icon:'database',description:'Query, model and optimize data with the universal language of analytics.'},
-python_foundation:{icon:'braces',description:'Automate ingestion, transformation and operational data workflows.'},
-data_modeling_foundation:{icon:'network',description:'Turn business processes into durable facts, dimensions and relationships.'},
-sources:{icon:'plug',description:'Understand where operational, file and event data originates.'},
-ingestion:{icon:'download',description:'Collect data reliably with batch, CDC, APIs and retry patterns.'},
-storage:{icon:'hard-drive',description:'Design durable database, object storage and lakehouse layouts.'},
-transformation:{icon:'shuffle',description:'Clean, enrich and model raw data into trusted datasets.'},
-orchestration:{icon:'workflow',description:'Schedule dependencies, retries and monitored pipeline runs.'},
-data_quality:{icon:'badge-check',description:'Protect data products with tests, validation and business rules.'},
-consumption:{icon:'bar-chart-3',description:'Deliver governed data to analytics, BI, APIs and downstream products.'},
-devops_git:{icon:'git-branch',description:'Version, test, package and release data systems safely.'},
-cloud:{icon:'cloud',description:'Operate scalable data services across modern cloud platforms.'},
-governance:{icon:'shield-check',description:'Define ownership, contracts, lineage and responsible access.'},
-observability:{icon:'activity',description:'Measure freshness, failures, latency and service health.'},
-architecture:{icon:'layers',description:'Choose resilient patterns for batch, streaming and lakehouse systems.'}
+sql_foundation:{icon:'database',logo:'postgresql',brand:'PostgreSQL',description:'Query, model and optimize data with the universal language of analytics.'},
+python_foundation:{icon:'braces',logo:'python',brand:'Python',description:'Automate ingestion, transformation and operational data workflows.'},
+data_modeling_foundation:{icon:'network',logo:'dbt',brand:'dbt',description:'Turn business processes into durable facts, dimensions and relationships.'},
+sources:{icon:'plug',logo:'postgresql',brand:'PostgreSQL',description:'Understand where operational, file and event data originates.'},
+ingestion:{icon:'download',logo:'airbyte',brand:'Airbyte',description:'Collect data reliably with batch, CDC, APIs and retry patterns.'},
+storage:{icon:'hard-drive',logo:'amazons3',brand:'Amazon S3',description:'Design durable database, object storage and lakehouse layouts.'},
+transformation:{icon:'shuffle',logo:'dbt',brand:'dbt',description:'Clean, enrich and model raw data into trusted datasets.'},
+orchestration:{icon:'workflow',logo:'apacheairflow',brand:'Apache Airflow',description:'Schedule dependencies, retries and monitored pipeline runs.'},
+data_quality:{icon:'badge-check',logo:'dbt',brand:'dbt tests',description:'Protect data products with tests, validation and business rules.'},
+consumption:{icon:'bar-chart-3',logo:'powerbi',brand:'Power BI',description:'Deliver governed data to analytics, BI, APIs and downstream products.'},
+devops_git:{icon:'git-branch',logo:'git',brand:'Git',description:'Version, test, package and release data systems safely.'},
+cloud:{icon:'cloud',logo:'amazonwebservices',brand:'AWS',description:'Operate scalable data services across modern cloud platforms.'},
+governance:{icon:'shield-check',brand:'Data governance',description:'Define ownership, contracts, lineage and responsible access.'},
+observability:{icon:'activity',logo:'grafana',brand:'Grafana',description:'Measure freshness, failures, latency and service health.'},
+architecture:{icon:'layers',logo:'apachekafka',brand:'Apache Kafka',description:'Choose resilient patterns for batch, streaming and lakehouse systems.'}
 };
 document.querySelectorAll('.found-card,.layer-card,.eng-card').forEach(card=>{
 if(card.dataset.pyramidReady)return;
@@ -2983,13 +2989,25 @@ head.setAttribute('tabindex','0');
 head.setAttribute('aria-expanded','false');
 head.insertAdjacentHTML('beforeend','<i data-lucide="chevron-down" class="pyramid-chevron"></i>');
 const info=cardInfo[targetId]||{icon:'book-open',description:'Explore this capability and connect it to the complete learning roadmap.'};
-head.insertAdjacentHTML('afterend',`<div class="pyramid-card-cover"><span class="pyramid-card-logo"><i data-lucide="${info.icon}"></i></span><span class="pyramid-card-disclaimer">${info.description}</span></div>`);
+const mark=info.logo?`<img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${info.logo}.svg" alt="${info.brand} logo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><i data-lucide="${info.icon}" style="display:none"></i>`:`<i data-lucide="${info.icon}"></i>`;
+head.insertAdjacentHTML('afterend',`<div class="pyramid-card-cover" role="button" tabindex="0"><span class="pyramid-card-logo">${mark}</span><span class="pyramid-card-copy"><span class="pyramid-card-brand">${info.brand||'Roadmap capability'}</span><span class="pyramid-card-disclaimer">${info.description}</span></span></div>`);
+const cover=card.querySelector('.pyramid-card-cover');
 const toggle=()=>{
+document.querySelectorAll('.pyramid-card.is-open').forEach(openCard=>{
+if(openCard===card)return;
+openCard.classList.remove('is-open');
+const openHead=openCard.querySelector('.found-head,.layer-head,.eng-head');
+if(openHead)openHead.setAttribute('aria-expanded','false');
+});
 const open=card.classList.toggle('is-open');
 head.setAttribute('aria-expanded',String(open));
 };
 head.addEventListener('click',toggle);
 head.addEventListener('keydown',event=>{
+if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle();}
+});
+cover.addEventListener('click',toggle);
+cover.addEventListener('keydown',event=>{
 if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle();}
 });
 if(targetId){
